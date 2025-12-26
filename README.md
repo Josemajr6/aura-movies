@@ -69,3 +69,37 @@
 1. **Clona el repositorio**:
    ```bash
    git clone [https://github.com/tu-usuario/AuraMovies.git](https://github.com/tu-usuario/AuraMovies.git)
+
+
+2.  **Abre el proyecto**:
+    Abre el archivo `AuraMovies.xcodeproj` en Xcode 15 o superior.
+
+3.  **Configura la API Key (IMPORTANTE)**:
+    El proyecto necesita un archivo de configuración que está ignorado en Git.
+    * Regístrate en [TMDB](https://www.themoviedb.org/) y obtén tu API Key gratuita.
+    * En Xcode, navega a la carpeta `AuraMovies/App/`.
+    * Crea un nuevo archivo llamado **`Config.xcconfig`**.
+    * Añade la siguiente línea dentro de ese archivo:
+        ```text
+        TMDB_API_KEY = tu_clave_de_tmdb_aqui
+        ```
+
+4.  **Compila y Ejecuta**:
+    Selecciona un simulador (ej. iPhone 15 Pro) y pulsa `Cmd + R`.
+
+---
+
+## 🏗️ Arquitectura
+
+El proyecto sigue una estructura modular limpia:
+
+* **App**: Punto de entrada y configuración global.
+* **Core**: Servicios de red (`MovieService`), Managers de persistencia (`FavoritesManager`, `HistoryManager`) y constantes.
+* **Features**: Módulos funcionales (MoviesList, MovieDetail, etc.). Cada uno contiene:
+    * *Models*: Estructuras de datos (`Movie`, `Cast`, `Video`).
+    * *ViewModels*: Lógica de negocio y estado (`HomeViewModel`, `SearchViewModel`).
+    * *Views*: Interfaz de usuario declarativa.
+
+---
+
+Desarrollado con ❤️ por **José Manuel Jiménez**
