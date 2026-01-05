@@ -10,6 +10,7 @@ struct UserProfileView: View {
     
     @State private var showFollowers = false
     @State private var showFollowing = false
+    @State private var selectedTab = 0 // 0: Favoritas, 1: Reseñas
     
     let columns = [GridItem(.adaptive(minimum: 150), spacing: 16)]
     
@@ -17,6 +18,7 @@ struct UserProfileView: View {
         ScrollView {
             if isLoading {
                 ProgressView()
+                    .controlSize(.large)
                     .padding(.top, 100)
             } else if let error = errorMessage {
                 ContentUnavailableView(
@@ -24,6 +26,7 @@ struct UserProfileView: View {
                     systemImage: "exclamationmark.triangle",
                     description: Text(error)
                 )
+                .padding(.top, 50)
             } else if let profile = profile {
                 VStack(spacing: 20) {
                     // CABECERA
@@ -38,6 +41,7 @@ struct UserProfileView: View {
                             }
                             .frame(width: 100, height: 100)
                             .clipShape(Circle())
+                            .shadow(radius: 5)
                         } else {
                             Circle()
                                 .fill(Color.orange.opacity(0.2))
@@ -68,6 +72,7 @@ struct UserProfileView: View {
                                     Text("\(profile.followersCount)")
                                         .font(.title3)
                                         .bold()
+                                        .foregroundColor(.primary)
                                     Text("Seguidores")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
@@ -80,6 +85,7 @@ struct UserProfileView: View {
                                     Text("\(profile.followingCount)")
                                         .font(.title3)
                                         .bold()
+                                        .foregroundColor(.primary)
                                     Text("Siguiendo")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
@@ -98,26 +104,16 @@ struct UserProfileView: View {
                     
                     // CONTENIDO DEL PERFIL
                     if profile.canViewProfile {
-                        // Mostrar películas
-                        VStack(alignment: .leading, spacing: 20) {
-                            if let favorites = profile.favoriteMovies, !favorites.isEmpty {
-                                movieSection(title: "Películas Favoritas", movies: favorites)
-                            }
-                            
-                            if let watched = profile.watchedMovies, !watched.isEmpty {
-                                movieSection(title: "Películas Vistas", movies: watched)
-                            }
-                            
-                            if (profile.favoriteMovies?.isEmpty ?? true) && (profile.watchedMovies?.isEmpty ?? true) {
-                                ContentUnavailableView(
-                                    "Sin Películas",
-                                    systemImage: "film",
-                                    description: Text("Este usuario aún no ha guardado películas")
-                                )
-                                .padding(.top, 50)
-                            }
+                        // Selector de pestaña
+                        Picker("", selection: $selectedTab) {
+                            Text("Favoritas").tag(0)
+                            Text("Reseñas").tag(1)
                         }
-                        .padding()
+                        .pickerStyle(.segmented)
+                        .padding(.horizontal)
+                        
+                        // Lista de películas
+                        moviesList
                     } else {
                         // Perfil Privado
                         VStack(spacing: 20) {
@@ -150,29 +146,46 @@ struct UserProfileView: View {
         .task {
             await loadProfile()
         }
+        .refreshable {
+            await loadProfile()
+        }
     }
     
+    // MARK: - Botón de Seguir
     private var followButton: some View {
         Group {
             if let status = profile?.followStatus {
                 Button(action: handleFollowAction) {
                     HStack {
-                        switch status {
-                        case "following":
-                            Image(systemName: "checkmark")
-                            Text("Siguiendo")
-                        case "pending":
-                            Image(systemName: "clock")
-                            Text("Solicitud Enviada")
-                        default:
-                            Image(systemName: "person.badge.plus")
-                            Text(profile?.isPrivate == true ? "Solicitar Seguir" : "Seguir")
+                        if isFollowing {
+                            ProgressView()
+                                .tint(.white)
+                        } else {
+                            switch status {
+                            case "following":
+                                Image(systemName: "checkmark")
+                                Text("Siguiendo")
+                            case "pending":
+                                Image(systemName: "xmark.circle")
+                                Text("Cancelar Solicitud")
+                            default:
+                                Image(systemName: "person.badge.plus")
+                                Text(profile?.isPrivate == true ? "Solicitar Seguir" : "Seguir")
+                            }
                         }
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(status == "following" ? Color.gray.opacity(0.2) : Color.blue)
-                    .foregroundColor(status == "following" ? .primary : .white)
+                    .background(
+                        status == "following" ? Color.gray.opacity(0.2) :
+                        status == "pending" ? Color.red.opacity(0.1) :
+                        Color.blue
+                    )
+                    .foregroundColor(
+                        status == "following" ? .primary :
+                        status == "pending" ? .red :
+                        .white
+                    )
                     .cornerRadius(12)
                 }
                 .disabled(isFollowing)
@@ -180,36 +193,126 @@ struct UserProfileView: View {
         }
     }
     
-    private func movieSection(title: String, movies: [UserMovieBasic]) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(title)
-                .font(.title3)
-                .bold()
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(movies) { movie in
-                        VStack(alignment: .leading) {
-                            AsyncImage(url: movie.posterURL) { image in
-                                image.resizable().aspectRatio(contentMode: .fill)
-                            } placeholder: {
-                                Color.gray.opacity(0.3)
+    // MARK: - Lista de Películas
+    @ViewBuilder
+    private var moviesList: some View {
+        if selectedTab == 0 {
+            // FAVORITAS (Sin reseña, solo poster)
+            if let movies = profile?.favoriteMovies, !movies.isEmpty {
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(movies) { movieDTO in
+                        let movie = Movie(
+                            id: movieDTO.movieID,
+                            title: movieDTO.title,
+                            overview: "",
+                            posterPath: movieDTO.posterPath,
+                            backdropPath: nil,
+                            releaseDate: nil,
+                            voteAverage: 0.0
+                        )
+                        
+                        NavigationLink(value: movie) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                AsyncImage(url: movieDTO.posterURL) { img in
+                                    img.resizable().aspectRatio(contentMode: .fill)
+                                } placeholder: { Color.gray.opacity(0.3) }
+                                .frame(width: 150, height: 225)
+                                .cornerRadius(12)
+                                .shadow(radius: 4)
+                                
+                                Text(movieDTO.title)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .lineLimit(2)
+                                    .foregroundColor(.primary)
+                                    .frame(maxWidth: 150, alignment: .leading)
                             }
-                            .frame(width: 120, height: 180)
-                            .cornerRadius(12)
-                            .shadow(radius: 4)
-                            
-                            Text(movie.title)
-                                .font(.caption)
-                                .lineLimit(2)
-                                .frame(width: 120)
                         }
+                        .buttonStyle(.plain)
                     }
                 }
+                .padding()
+            } else {
+                ContentUnavailableView(
+                    "Sin Favoritas",
+                    systemImage: "heart.slash",
+                    description: Text("\(profile?.username ?? "Este usuario") no tiene favoritas.")
+                )
+                .padding(.top, 40)
+            }
+        } else {
+            // RESEÑAS (Con estrellas y texto completo)
+            if let movies = profile?.watchedMovies, !movies.isEmpty {
+                LazyVStack(spacing: 16) {
+                    ForEach(movies) { movieDTO in
+                        let movie = Movie(
+                            id: movieDTO.movieID,
+                            title: movieDTO.title,
+                            overview: "",
+                            posterPath: movieDTO.posterPath,
+                            backdropPath: nil,
+                            releaseDate: nil,
+                            voteAverage: 0.0
+                        )
+                        
+                        NavigationLink(value: movie) {
+                            HStack(alignment: .top, spacing: 16) {
+                                // Poster
+                                AsyncImage(url: movieDTO.posterURL) { img in
+                                    img.resizable().aspectRatio(contentMode: .fill)
+                                } placeholder: { Color.gray.opacity(0.2) }
+                                .frame(width: 80, height: 120)
+                                .cornerRadius(8)
+                                .clipped()
+                                
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text(movieDTO.title)
+                                        .font(.headline)
+                                        .foregroundColor(.primary)
+                                    
+                                    // ESTRELLAS (si tiene valoración)
+                                    if let rating = movieDTO.userRating {
+                                        HStack(spacing: 2) {
+                                            ForEach(1...5, id: \.self) { star in
+                                                Image(systemName: star <= rating ? "star.fill" : "star")
+                                                    .font(.caption)
+                                                    .foregroundColor(.yellow)
+                                            }
+                                        }
+                                    }
+                                    
+                                    // RESEÑA (si tiene texto)
+                                    if let review = movieDTO.userReview, !review.isEmpty {
+                                        Text("\"\(review)\"")
+                                            .font(.subheadline)
+                                            .italic()
+                                            .foregroundColor(.secondary)
+                                            .lineLimit(4)
+                                            .padding(.top, 4)
+                                    }
+                                }
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                        }
+                        .buttonStyle(.plain)
+                        
+                        Divider().padding(.horizontal)
+                    }
+                }
+                .padding(.vertical)
+            } else {
+                ContentUnavailableView(
+                    "Sin Reseñas",
+                    systemImage: "star.slash",
+                    description: Text("\(profile?.username ?? "Este usuario") no ha escrito reseñas.")
+                )
+                .padding(.top, 40)
             }
         }
     }
     
+    // MARK: - Funciones
     private func loadProfile() async {
         isLoading = true
         errorMessage = nil
@@ -234,9 +337,11 @@ struct UserProfileView: View {
         
         Task {
             do {
-                if profile.followStatus == "following" {
+                if profile.followStatus == "following" || profile.followStatus == "pending" {
+                    // Dejar de seguir o cancelar solicitud
                     try await UserService.shared.unfollowUser(userID: userID)
                 } else {
+                    // Seguir usuario
                     try await UserService.shared.followUser(userID: userID)
                 }
                 
@@ -253,6 +358,7 @@ struct UserProfileView: View {
     }
 }
 
+// MARK: - Vista de Lista de Seguidores/Siguiendo
 enum FollowListType {
     case followers, following
 }
@@ -264,6 +370,7 @@ struct FollowListView: View {
     @Environment(\.dismiss) var dismiss
     @State private var users: [UserSearchResult] = []
     @State private var isLoading = true
+    @State private var processingUsers: Set<UUID> = []
     
     var body: some View {
         NavigationStack {
@@ -277,8 +384,25 @@ struct FollowListView: View {
                     )
                 } else {
                     List(users) { user in
-                        NavigationLink(value: user.id) {
-                            UserSearchCell(user: user)
+                        HStack {
+                            NavigationLink(value: user.id) {
+                                UserSearchCell(user: user)
+                            }
+                            
+                            // Botón de Eliminar
+                            if !processingUsers.contains(user.id) {
+                                Button {
+                                    handleRemove(user)
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.red)
+                                        .font(.title3)
+                                }
+                                .buttonStyle(.plain)
+                            } else {
+                                ProgressView()
+                                    .controlSize(.small)
+                            }
                         }
                         .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                         .listRowBackground(Color.clear)
@@ -297,6 +421,9 @@ struct FollowListView: View {
                 UserProfileView(userID: userID)
             }
             .task {
+                await loadUsers()
+            }
+            .refreshable {
                 await loadUsers()
             }
         }
@@ -320,8 +447,35 @@ struct FollowListView: View {
             }
         }
     }
+    
+    private func handleRemove(_ user: UserSearchResult) {
+        processingUsers.insert(user.id)
+        
+        Task {
+            do {
+                if type == .followers {
+                    // Eliminar seguidor (quitar a alguien que me sigue)
+                    try await UserService.shared.removeFollower(userID: user.id)
+                } else {
+                    // Dejar de seguir (yo dejo de seguir a alguien)
+                    try await UserService.shared.unfollowUser(userID: user.id)
+                }
+                
+                await MainActor.run {
+                    users.removeAll { $0.id == user.id }
+                    processingUsers.remove(user.id)
+                }
+            } catch {
+                print("❌ Error eliminando: \(error)")
+                await MainActor.run {
+                    processingUsers.remove(user.id)
+                }
+            }
+        }
+    }
 }
 
+// MARK: - Celda de Usuario
 struct UserSearchCell: View {
     let user: UserSearchResult
     

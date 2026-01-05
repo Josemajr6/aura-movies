@@ -60,6 +60,7 @@ do {
     app.migrations.add(AddLastUsernameChangeToUser())
     app.migrations.add(AddIsPrivateToUser())
     app.migrations.add(CreateUserFollow())
+    app.migrations.add(CreateDeviceToken())
 
     do {
         try await app.autoMigrate()
@@ -73,6 +74,7 @@ do {
     try app.register(collection: AuthController())
     try app.register(collection: MoviesInteractionController())
     try app.register(collection: UserSearchController())
+    try app.register(collection: PushNotificationController()) 
 
     let port = Environment.get("PORT").flatMap(Int.init) ?? 8080
     app.http.server.configuration.hostname = "0.0.0.0"

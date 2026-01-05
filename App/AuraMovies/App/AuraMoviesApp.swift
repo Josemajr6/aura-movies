@@ -1,4 +1,5 @@
 import SwiftUI
+import UserNotifications
 
 @main
 struct AuraMoviesApp: App {
@@ -7,7 +8,6 @@ struct AuraMoviesApp: App {
 
     var body: some Scene {
         WindowGroup {
-            // Router principal: Si está autenticado muestra la App, si no, el Login
             if authService.isAuthenticated {
                 MainTabView()
                     .transition(.opacity)
@@ -16,6 +16,6 @@ struct AuraMoviesApp: App {
                     .transition(.opacity)
             }
         }
-        // Puedes añadir .animation(.default, value: authService.isAuthenticated) aquí si quieres suavizar el cambio
     }
+    
 }

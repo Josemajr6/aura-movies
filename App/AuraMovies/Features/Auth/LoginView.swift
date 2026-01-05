@@ -2,10 +2,7 @@ import SwiftUI
 import AuthenticationServices
 
 struct LoginView: View {
-    // Detectar modo claro/oscuro
     @Environment(\.colorScheme) var colorScheme
-    
-    // Servicio de autenticación
     @StateObject private var authService = AuthService.shared
     
     // MARK: - Estados del Formulario
@@ -33,7 +30,6 @@ struct LoginView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Fondo del sistema
                 Color(.systemBackground).ignoresSafeArea()
                 
                 ScrollView {
@@ -41,7 +37,7 @@ struct LoginView: View {
                         
                         // MARK: - Header (Logo)
                         VStack(spacing: 20) {
-                            Image("appiconauramovies") // Nombre exacto en Assets
+                            Image("appiconauramovies")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 100, height: 100)
@@ -64,24 +60,40 @@ struct LoginView: View {
                         VStack(spacing: 20) {
                             
                             if isRegistering {
-                                // Registro: Usuario y Email
+                                // Registro: Usuario y Email separados
                                 CustomTextField(icon: "person", placeholder: "Usuario", text: $username)
                                     .textInputAutocapitalization(.never)
+                                    .autocorrectionDisabled()
                                 
                                 CustomTextField(icon: "envelope", placeholder: "Correo electrónico", text: $email)
                                     .keyboardType(.emailAddress)
                                     .textInputAutocapitalization(.never)
+                                    .autocorrectionDisabled()
                             } else {
-                                // Login: Usuario o Email
-                                CustomTextField(icon: "person", placeholder: "Usuario o Email", text: $username)
-                                    .textInputAutocapitalization(.never)
+                                // Login: Usuario O Email (campo unificado)
+                                CustomTextField(
+                                    icon: "person",
+                                    placeholder: "Usuario o Email",
+                                    text: $username
+                                )
+                                .keyboardType(.emailAddress)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
                             }
                             
                             // Contraseña
-                            CustomPasswordField(placeholder: "Contraseña", text: $password, isVisible: $showPassword)
+                            CustomPasswordField(
+                                placeholder: "Contraseña",
+                                text: $password,
+                                isVisible: $showPassword
+                            )
                             
                             if isRegistering {
-                                CustomPasswordField(placeholder: "Repetir contraseña", text: $confirmPassword, isVisible: $showPassword)
+                                CustomPasswordField(
+                                    placeholder: "Repetir contraseña",
+                                    text: $confirmPassword,
+                                    isVisible: $showPassword
+                                )
                             }
                             
                             // Botón Olvidé contraseña (Solo en Login)
@@ -89,7 +101,7 @@ struct LoginView: View {
                                 HStack {
                                     Spacer()
                                     Button("¿Has olvidado la contraseña?") {
-                                        forgotPasswordEmail = "" // Limpiar campo
+                                        forgotPasswordEmail = ""
                                         showingForgotPasswordAlert = true
                                     }
                                     .font(.footnote)
@@ -97,7 +109,7 @@ struct LoginView: View {
                                 }
                             }
                             
-                            // Mensaje de Error General
+                            // Mensaje de Error
                             if let error = errorMessage {
                                 Text(error)
                                     .foregroundColor(.red)
@@ -151,7 +163,7 @@ struct LoginView: View {
                         
                         Spacer()
                         
-                        // MARK: - Footer (Switch Login/Registro)
+                        // MARK: - Footer
                         HStack {
                             Text(isRegistering ? "¿Ya tienes cuenta?" : "¿No tienes cuenta?")
                                 .foregroundColor(.secondary)
@@ -172,14 +184,12 @@ struct LoginView: View {
                     }
                 }
             }
-            // Navegaciones
             .navigationDestination(isPresented: $navigateToVerification) {
                 VerificationView(email: email)
             }
             .navigationDestination(isPresented: $navigateToResetPassword) {
                 ResetPasswordView(email: forgotPasswordEmail)
             }
-            // Alerta Input Correo
             .alert("Recuperar contraseña", isPresented: $showingForgotPasswordAlert) {
                 TextField("Correo electrónico", text: $forgotPasswordEmail)
                     .textInputAutocapitalization(.never)
@@ -189,10 +199,8 @@ struct LoginView: View {
             } message: {
                 Text("Introduce tu correo asociado a la cuenta.")
             }
-            // Alerta Resultado Reset
             .alert("Estado del envío", isPresented: $showingResetMessageAlert) {
                 Button("OK", role: .cancel) {
-                    // Si el mensaje dice que fue enviado, navegamos
                     if resetMessage.contains("enviado") {
                         navigateToResetPassword = true
                     }
@@ -206,7 +214,11 @@ struct LoginView: View {
     // MARK: - Validaciones
     var isFormValid: Bool {
         if isRegistering {
-            return !username.isEmpty && username.count >= 3 && isValidEmail(email) && password.count >= 8 && password == confirmPassword
+            return !username.isEmpty &&
+                   username.count >= 3 &&
+                   isValidEmail(email) &&
+                   password.count >= 8 &&
+                   password == confirmPassword
         } else {
             return !username.isEmpty && !password.isEmpty
         }
@@ -217,8 +229,7 @@ struct LoginView: View {
         return NSPredicate(format:"SELF MATCHES %@", emailRegex).evaluate(with: email)
     }
     
-    // MARK: - Manejadores de Acción
-    
+    // MARK: - Handlers
     func handleAuth() {
         errorMessage = nil
         UIApplication.shared.endEditing()
@@ -232,11 +243,18 @@ struct LoginView: View {
         
         Task {
             do {
-                let success = try await authService.register(username: cleanUsername, email: cleanEmail, password: password)
+                let success = try await authService.register(
+                    username: cleanUsername,
+                    email: cleanEmail,
+                    password: password
+                )
                 await MainActor.run {
                     isLoading = false
-                    if success { navigateToVerification = true }
-                    else { errorMessage = "Error en el registro." }
+                    if success {
+                        navigateToVerification = true
+                    } else {
+                        errorMessage = "Error en el registro."
+                    }
                 }
             } catch {
                 await MainActor.run {
@@ -254,12 +272,15 @@ struct LoginView: View {
     
     func handleLogin() {
         isLoading = true
-        let cleanUsername = username.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanInput = username.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
         
         Task {
             do {
-                let success = try await authService.login(username: cleanUsername, password: cleanPassword)
+                let success = try await authService.login(
+                    username: cleanInput,
+                    password: cleanPassword
+                )
                 await MainActor.run {
                     isLoading = false
                     if !success {
@@ -269,15 +290,12 @@ struct LoginView: View {
             } catch {
                 await MainActor.run {
                     isLoading = false
-                    print("Debug Login Error: \(error)")
-                    // Detectamos error 401 Unauthorized
                     errorMessage = "Usuario o contraseña incorrectos."
                 }
             }
         }
     }
     
-    // MARK: - LÓGICA CLAVE DE RECUPERACIÓN
     func requestPasswordReset() {
         let cleanEmail = forgotPasswordEmail.trimmingCharacters(in: .whitespacesAndNewlines)
         
@@ -289,21 +307,14 @@ struct LoginView: View {
         
         Task {
             do {
-                // Llamamos al backend.
-                // IMPORTANTE: Si el AuthService recibe un código != 200, debe lanzar error.
                 _ = try await authService.requestPasswordReset(email: cleanEmail)
-                
                 await MainActor.run {
-                    // Si llegamos aquí, el servidor respondió 200 OK -> Correo existe
                     resetMessage = "✅ Se ha enviado un código de recuperación a tu correo."
                     showingResetMessageAlert = true
                 }
             } catch {
                 await MainActor.run {
-                    // Si entramos al catch, algo falló.
                     let errorStr = error.localizedDescription.lowercased()
-                    
-                    // Ajusta estos textos según lo que tu AuthService devuelva en el error
                     if errorStr.contains("404") || errorStr.contains("not found") || errorStr.contains("no existe") {
                         resetMessage = "⚠️ Este correo no está registrado en nuestra base de datos."
                     } else {
@@ -316,7 +327,6 @@ struct LoginView: View {
     }
     
     func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {
-        // Tu lógica de Apple ID igual que antes...
         switch result {
         case .success(let authorization):
             if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
@@ -327,9 +337,15 @@ struct LoginView: View {
                             email: appleIDCredential.email,
                             fullName: appleIDCredential.fullName
                         )
-                        await MainActor.run { if !success { errorMessage = "Fallo login con Apple" } }
+                        await MainActor.run {
+                            if !success {
+                                errorMessage = "Fallo login con Apple"
+                            }
+                        }
                     } catch {
-                        await MainActor.run { errorMessage = error.localizedDescription }
+                        await MainActor.run {
+                            errorMessage = error.localizedDescription
+                        }
                     }
                 }
             }
@@ -340,26 +356,56 @@ struct LoginView: View {
 
 // MARK: - Utilidades UI
 struct CustomTextField: View {
-    var icon: String; var placeholder: String; @Binding var text: String
+    var icon: String
+    var placeholder: String
+    @Binding var text: String
+    
     var body: some View {
-        HStack { Image(systemName: icon).foregroundColor(.gray).frame(width: 20); TextField(placeholder, text: $text) }
-        .padding().background(Color(.systemGray6)).cornerRadius(12)
+        HStack {
+            Image(systemName: icon)
+                .foregroundColor(.gray)
+                .frame(width: 20)
+            TextField(placeholder, text: $text)
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
     }
 }
 
 struct CustomPasswordField: View {
-    var placeholder: String; @Binding var text: String; @Binding var isVisible: Bool
+    var placeholder: String
+    @Binding var text: String
+    @Binding var isVisible: Bool
+    
     var body: some View {
         HStack {
-            Image(systemName: "lock").foregroundColor(.gray).frame(width: 20)
-            if isVisible { TextField(placeholder, text: $text).textInputAutocapitalization(.never) }
-            else { SecureField(placeholder, text: $text) }
-            Button { isVisible.toggle() } label: { Image(systemName: isVisible ? "eye.slash" : "eye").foregroundColor(.gray) }
+            Image(systemName: "lock")
+                .foregroundColor(.gray)
+                .frame(width: 20)
+            
+            if isVisible {
+                TextField(placeholder, text: $text)
+                    .textInputAutocapitalization(.never)
+            } else {
+                SecureField(placeholder, text: $text)
+            }
+            
+            Button {
+                isVisible.toggle()
+            } label: {
+                Image(systemName: isVisible ? "eye.slash" : "eye")
+                    .foregroundColor(.gray)
+            }
         }
-        .padding().background(Color(.systemGray6)).cornerRadius(12)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
     }
 }
 
 extension UIApplication {
-    func endEditing() { sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil) }
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
 }

@@ -34,6 +34,8 @@ struct UserMovieBasic: Codable, Identifiable {
     let movieID: Int
     let title: String
     let posterPath: String?
+    let userRating: Int?
+    let userReview: String?
     
     var id: Int { movieID }
     
@@ -98,7 +100,7 @@ class UserService {
         return try JSONDecoder().decode(UserProfileResponse.self, from: data)
     }
     
-    // MARK: - Seguimiento
+    // MARK: - Seguir
     func followUser(userID: UUID) async throws {
         guard let token = AuthService.shared.token else {
             throw URLError(.userAuthenticationRequired)
@@ -119,12 +121,34 @@ class UserService {
         }
     }
     
+    // MARK: - Dejar de seguir
     func unfollowUser(userID: UUID) async throws {
         guard let token = AuthService.shared.token else {
             throw URLError(.userAuthenticationRequired)
         }
         
         guard let url = URL(string: "\(baseURL)/users/\(userID.uuidString)/unfollow") else {
+            throw URLError(.badURL)
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+    }
+    
+    // MARK: - 🆕 Eliminar Seguidor (Quitar a alguien que te sigue)
+    func removeFollower(userID: UUID) async throws {
+        guard let token = AuthService.shared.token else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        
+        guard let url = URL(string: "\(baseURL)/users/\(userID.uuidString)/remove-follower") else {
             throw URLError(.badURL)
         }
         
@@ -176,6 +200,14 @@ class UserService {
               (200...299).contains(httpResponse.statusCode) else {
             throw URLError(.badServerResponse)
         }
+        
+        // GENERAR NOTIFICACIÓN AL ACEPTAR
+        // (En un caso real, esto vendría del servidor)
+        NotificationManager.shared.addNotification(AppNotification(
+            type: .followRequestAccepted,
+            title: "Solicitud aceptada",
+            message: "Has aceptado una solicitud de seguimiento"
+        ))
     }
     
     func rejectFollowRequest(requestID: UUID) async throws {

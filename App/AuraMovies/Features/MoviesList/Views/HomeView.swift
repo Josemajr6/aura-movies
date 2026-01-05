@@ -2,6 +2,8 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
+    @State private var notificationManager = NotificationManager.shared
+    @State private var showNotifications = false
     
     var body: some View {
         NavigationStack {
@@ -13,7 +15,7 @@ struct HomeView: View {
                         // SECCIONES
                         MovieSection(title: "Selección AuraMovies 🍿", movies: viewModel.auraSelection)
                         
-                        Divider().padding(.horizontal) 
+                        Divider().padding(.horizontal)
                         
                         MovieSection(title: "Últimos Estrenos 🔥", movies: viewModel.nowPlaying)
                         MovieSection(title: "Más Vistas", movies: viewModel.popular)
@@ -23,6 +25,32 @@ struct HomeView: View {
                 .padding(.vertical)
             }
             .navigationTitle("Inicio")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showNotifications = true
+                    } label: {
+                        ZStack(alignment: .topTrailing) {
+                            Image(systemName: "bell.fill")
+                                .foregroundColor(.blue)
+                                .font(.title3)
+                            
+                            if notificationManager.unreadCount > 0 {
+                                Text("\(notificationManager.unreadCount)")
+                                    .font(.caption2)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .padding(4)
+                                    .background(Circle().fill(Color.red))
+                                    .offset(x: 10, y: -10)
+                            }
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showNotifications) {
+                NotificationsView()
+            }
             // NAVEGACIÓN (Rutas)
             .navigationDestination(for: Movie.self) { movie in
                 MovieDetailView(movie: movie)
@@ -33,11 +61,15 @@ struct HomeView: View {
             .task {
                 await viewModel.loadAllSections()
             }
+            .refreshable {
+                await viewModel.loadAllSections()
+                await notificationManager.checkForNewNotifications()
+            }
         }
     }
 }
 
-// Subvista reutilizable (Igual que antes)
+// Subvista reutilizable
 struct MovieSection: View {
     let title: String
     let movies: [Movie]
@@ -63,4 +95,8 @@ struct MovieSection: View {
             }
         }
     }
+}
+
+#Preview {
+    HomeView()
 }
