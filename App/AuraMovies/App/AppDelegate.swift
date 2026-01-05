@@ -24,9 +24,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             }
         }
         
-        // Configurar listener de notificaciones remotas
-        NotificationManager.shared.setupRemoteNotificationListener()
-        
         return true
     }
     

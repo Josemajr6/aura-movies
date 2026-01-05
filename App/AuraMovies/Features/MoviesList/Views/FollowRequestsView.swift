@@ -80,7 +80,7 @@ struct FollowRequestsView: View {
                 }
             } catch {
                 print("❌ Error aceptando solicitud: \(error)")
-                await MainActor.run {
+                await MainActor.run { 
                     processingRequests.remove(request.id)
                 }
             }

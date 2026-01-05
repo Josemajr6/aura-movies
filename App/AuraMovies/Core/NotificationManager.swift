@@ -242,23 +242,4 @@ class NotificationManager {
         }
     }
     
-    // MARK: - Listener de Notificaciones Remotas
-    func setupRemoteNotificationListener() {
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name("OpenNotifications"),
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            // Señal para abrir la pantalla de notificaciones
-            NotificationCenter.default.post(
-                name: NSNotification.Name("ShowNotificationsSheet"),
-                object: nil
-            )
-            
-            // Recargar notificaciones del servidor
-            Task { [weak self] in
-                await self?.checkForNewNotifications()
-            }
-        }
-    }
 }

@@ -220,7 +220,7 @@ struct UserSearchController: RouteCollection {
            // 🔔 CREAR NOTIFICACIÓN
            if status == .accepted {
                // Cuenta pública - notificar directamente
-               try await req.application.createNotification(
+               try await req.application.createNotificationWithPush(
                    for: targetUserID,
                    type: .newFollower,
                    title: "Nuevo seguidor",
@@ -230,7 +230,7 @@ struct UserSearchController: RouteCollection {
                )
            } else {
                // Cuenta privada - notificar solicitud
-               try await req.application.createNotification(
+               try await req.application.createNotificationWithPush(
                    for: targetUserID,
                    type: .newFollowRequest,
                    title: "Nueva solicitud de seguimiento",
@@ -238,6 +238,7 @@ struct UserSearchController: RouteCollection {
                    relatedUserID: currentUserID,
                    relatedUsername: currentUser.username
                )
+
            }
            
            return .created
@@ -330,15 +331,14 @@ struct UserSearchController: RouteCollection {
            
            // 🔔 NOTIFICAR AL USUARIO QUE SU SOLICITUD FUE ACEPTADA
            let followerID = follow.$follower.id
-           try await req.application.createNotification(
-               for: followerID,
-               type: .followRequestAccepted,
-               title: "Solicitud aceptada",
-               message: "\(currentUser.username) ha aceptado tu solicitud",
-               relatedUserID: currentUserID,
-               relatedUsername: currentUser.username
-           )
-           
+            try await req.application.createNotificationWithPush(
+                for: followerID,
+                type: .followRequestAccepted,
+                title: "Solicitud aceptada",
+                message: "\(currentUser.username) ha aceptado tu solicitud",
+                relatedUserID: currentUserID,
+                relatedUsername: currentUser.username
+            )
            return .ok
        }
     
