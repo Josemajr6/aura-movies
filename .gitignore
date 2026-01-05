@@ -1,1 +1,26 @@
-AuraMovies/App/Config.xcconfig
+# --- macOS ---
+.DS_Store
+
+# --- Xcode ---
+*.xcworkspace
+xcuserdata/
+DerivedData/
+*.moved-aside
+*.xcuserstate
+*.os_activity_dt_mode
+
+# --- Swift Package Manager ---
+.build/
+Packages/
+Package.resolved
+
+# --- SECRETS & CONFIG (Lo que pediste) ---
+# Ignorar archivo de configuración de Xcode con claves API
+App/AuraMovies/App/Config.xcconfig
+
+# Ignorar variables de entorno del servidor Vapor
+Backend/.env
+
+# --- Vapor ---
+Backend/Public/
+Backend/Resources/Views/
