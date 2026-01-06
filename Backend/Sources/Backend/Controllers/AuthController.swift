@@ -2,6 +2,35 @@ import Fluent
 import Vapor
 import Smtp
 
+struct FlexibleUserAuthenticator: AsyncBasicAuthenticator {
+    func authenticate(basic: BasicAuthorization, for request: Request) async throws {
+        // El identificador puede ser username O email
+        let identifier = basic.username
+        let password = basic.password
+        
+        // 1. Intentar buscar por username
+        var user = try await User.query(on: request.db)
+            .filter(\.$username == identifier)
+            .first()
+        
+        // 2. Si no existe, buscar por email
+        if user == nil {
+            user = try await User.query(on: request.db)
+                .filter(\.$email == identifier)
+                .first()
+        }
+        
+        // 3. Verificar que existe y que la contraseña es correcta
+        guard let foundUser = user,
+              try Bcrypt.verify(password, created: foundUser.passwordHash) else {
+            return
+        }
+        
+        // 4. Autenticar
+        request.auth.login(foundUser)
+    }
+}
+
 struct AuthController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
             let auth = routes.grouped("auth")
@@ -19,7 +48,7 @@ struct AuthController: RouteCollection {
         
             // 2. Rutas protegidas por CONTRASEÑA (Solo Login)
             // User.authenticator() lee cabeceras Basic Auth (user:pass)
-            let passwordProtected = auth.grouped(User.authenticator())
+            let passwordProtected = auth.grouped(FlexibleUserAuthenticator())
             passwordProtected.post("login", use: login)
             
             // 3. Rutas protegidas por TOKEN (Perfil, Avatar, Cambiar Pass)

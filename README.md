@@ -10,6 +10,37 @@
 
 ---
 
+## 📸 Capturas de Pantalla
+
+<p align="center">
+  <img src="screenshots/home.png" width="200" alt="Inicio"/>
+  <img src="screenshots/detail.png" width="200" alt="Detalle"/>
+  <img src="screenshots/profile.png" width="200" alt="Perfil"/>
+  <img src="screenshots/notifications.png" width="200" alt="Notificaciones"/>
+</p>
+
+<p align="center">
+  <img src="screenshots/search.png" width="200" alt="Búsqueda"/>
+  <img src="screenshots/reviews.png" width="200" alt="Reseñas"/>
+  <img src="screenshots/categories.png" width="200" alt="Categorías"/>
+  <img src="screenshots/social.png" width="200" alt="Social"/>
+</p>
+
+### 🎯 Características Destacadas
+
+| Característica | Descripción | Screenshot |
+|---------------|-------------|------------|
+| **🏠 Inicio** | Explora listas curadas de películas: Trending, Estrenos, Populares y Top Rated | `screenshots/home.png` |
+| **🎬 Detalle de Película** | Sinopsis completa, trailers, reparto y recomendaciones | `screenshots/detail.png` |
+| **⭐ Sistema de Reseñas** | Valora películas con estrellas y escribe opiniones | `screenshots/reviews.png` |
+| **👤 Perfil de Usuario** | Gestiona tus favoritas, reseñas y seguidores | `screenshots/profile.png` |
+| **🔔 Notificaciones** | Push reales y solicitudes de seguimiento integradas | `screenshots/notifications.png` |
+| **🔍 Búsqueda Avanzada** | Busca películas, actores y usuarios | `screenshots/search.png` |
+| **🎭 Categorías** | Explora por géneros con iconos únicos | `screenshots/categories.png` |
+| **🤝 Red Social** | Sigue usuarios, perfiles públicos/privados | `screenshots/social.png` |
+
+---
+
 ## ✨ Características Principales
 
 ### 🎭 Exploración de Películas
@@ -29,15 +60,16 @@
 - **Persistencia**: Sesiones guardadas de forma segura
 
 ### 🤝 Sistema Social
-- **Perfiles de Usuario**: Ver perfiles de otros usuarios con películas favoritas y reseñas
+- **Perfiles de Usuario**: Ver perfiles de otros usuarios con películas favoritas y reseñas completas
 - **Seguir Usuarios**: Sistema de seguidores y seguidos
 - **Cuentas Privadas**: Opción de perfil privado con solicitudes de seguimiento
-- **Gestión de Seguidores**: Acepta/rechaza solicitudes, elimina seguidores
+- **Gestión de Seguidores**: Acepta/rechaza solicitudes desde notificaciones, elimina seguidores
 - **Búsqueda de Usuarios**: Encuentra otros cinéfilos por nombre
 
 ### 🔔 Sistema de Notificaciones
 - **Notificaciones Push Reales**: Recibe notificaciones en tu dispositivo incluso con la app cerrada
-- **Notificaciones en la App**: Badge con contador de no leídas
+- **Badge Inteligente**: Contador de notificaciones + solicitudes pendientes
+- **Solicitudes Integradas**: Gestiona solicitudes directamente desde la campana 🔔
 - **Tipos de Notificaciones**:
   - 🔵 Nuevo seguidor
   - ✅ Solicitud de seguimiento aceptada
@@ -45,12 +77,12 @@
   - ✨ Recomendaciones de películas
   - 🔥 Películas en tendencia
 - **Sincronización Automática**: Verifica nuevas notificaciones cada 30 segundos
-- **Gestión Completa**: Marcar como leídas, eliminar, ver detalles
+- **Gestión Completa**: Marcar como leídas, eliminar, aceptar/rechazar solicitudes
 
 ### 📱 Gestión Personal
 - ❤️ **Favoritos**: Guarda las películas que amas
-- ⭐ **Reseñas**: Escribe valoraciones (1-5 estrellas) y opiniones de las películas que has visto
-- 👁️ **Historial**: Películas que has visto con tus reseñas completas
+- ⭐ **Reseñas Completas**: Escribe valoraciones (1-5 estrellas) y opiniones de hasta 280 caracteres
+- 👁️ **Historial Detallado**: Películas vistas con estrellas y comentarios completos visibles
 - 📊 **Estadísticas**: Contador de favoritos, películas vistas, seguidores y siguiendo
 - 💾 **Sincronización**: Datos guardados localmente y en el servidor
 
@@ -60,6 +92,50 @@
 - **Diseño Premium**: Gradientes, sombras y elementos modernos
 - **Iconos por Género**: Cada categoría tiene su icono único (⚡ 🗺️ 😊 ❤️ 🌙)
 - **Responsive**: Optimizado para iPhone y iPad
+
+---
+
+## 📷 Guía para Añadir Capturas
+
+### Crear carpeta de screenshots
+
+```bash
+# En la raíz del proyecto
+mkdir screenshots
+```
+
+### Tomar capturas en Xcode
+
+1. **Ejecuta la app** en simulador (iPhone 15 Pro recomendado)
+2. **Navega a cada pantalla**:
+   - Inicio (HomeView)
+   - Detalle de película
+   - Perfil
+   - Notificaciones con solicitudes
+   - Búsqueda
+   - Reseñas con estrellas
+   - Categorías
+   - Perfil de otro usuario
+3. **Captura**: `⌘ + S` (se guarda en Escritorio)
+4. **Renombra** los archivos:
+   ```
+   home.png
+   detail.png
+   profile.png
+   notifications.png
+   search.png
+   reviews.png
+   categories.png
+   social.png
+   ```
+5. **Mueve** a la carpeta `screenshots/`
+
+### Formato recomendado
+
+- **Resolución**: 1170 x 2532 (iPhone 15 Pro)
+- **Formato**: PNG
+- **Orientación**: Vertical
+- **Modo**: Claro o Oscuro (consistente)
 
 ---
 
@@ -100,403 +176,100 @@
 - MongoDB 6.0+
 - Cuenta de Gmail (para envío de emails)
 
-### Instalación Paso a Paso
+### Instalación Rápida
 
-#### 1. Clonar el repositorio
 ```bash
+# 1. Clonar repositorio
 git clone https://github.com/tu-usuario/aura-movies.git
 cd aura-movies
-```
 
-#### 2. Instalar MongoDB
-```bash
-# Con Homebrew (macOS)
+# 2. Instalar MongoDB
 brew tap mongodb/brew
 brew install mongodb-community
-
-# Iniciar MongoDB
 brew services start mongodb-community
 
-# Verificar instalación
-mongosh
-show dbs
-exit
-```
-
-#### 3. Configurar Gmail para SMTP
-
-**Importante**: Necesitas una "Contraseña de Aplicación", NO tu contraseña normal de Gmail.
-
-1. Ve a [myaccount.google.com](https://myaccount.google.com/)
-2. Navega a **Seguridad**
-3. Activa la **Verificación en dos pasos** (si no la tienes)
-4. Busca **Contraseñas de aplicación**
-5. Genera una nueva para "Correo"
-6. Copia la contraseña (16 caracteres sin espacios)
-
-#### 4. Configurar Variables de Entorno
-
-Edita el archivo `Backend/.env`:
-
-```env
-# MongoDB
-MONGO_HOST=localhost
-MONGO_PORT=27017
-MONGO_DATABASE=auramovies_db
-
-# Servidor
-PORT=8080
-
-# Gmail SMTP (¡USA LA CONTRASEÑA DE APLICACIÓN!)
-SMTP_EMAIL=tucorreo@gmail.com
-SMTP_PASSWORD=xxxx xxxx xxxx xxxx
-
-# TMDB API
-TMDB_API_KEY=e415922e4ce74a94f75e5e34e1ae9a26
-```
-
-#### 5. Configurar la App iOS
-
-**a) Crear archivo de configuración**
-
-`App/AuraMovies/App/Config.xcconfig`:
-```text
-TMDB_API_KEY = e415922e4ce74a94f75e5e34e1ae9a26
-```
-
-**b) Añadir permisos en Info.plist**
-
-```xml
-<key>NSUserNotificationsUsageDescription</key>
-<string>Recibe notificaciones sobre seguimientos y actividad de películas</string>
-```
-
-**c) Habilitar Push Notifications en Xcode**
-
-1. Abre el proyecto en Xcode
-2. Selecciona el target **AuraMovies**
-3. Ve a **Signing & Capabilities**
-4. Haz clic en **+ Capability**
-5. Busca y añade **Push Notifications**
-
-#### 6. Iniciar el Backend
-
-```bash
+# 3. Configurar Backend
 cd Backend
-swift build
+cp .env.example .env
+# Edita .env con tus credenciales
+
+# 4. Iniciar Backend
 swift run
-```
 
-**Deberías ver:**
-```
-🔗 Conectando a MongoDB: mongodb://localhost:27017/auramovies_db
-✅ Migraciones completadas
-📬 Tabla 'notifications' creada
-📱 Tabla 'device_tokens' creada
-🚀 Servidor iniciado en http://localhost:8080
-```
-
-#### 7. Ejecutar la App iOS
-
-```bash
+# 5. Abrir App
 cd ../App
 open AuraMovies.xcodeproj
 ```
 
-En Xcode:
-1. Selecciona un simulador (iPhone 15 Pro recomendado)
-2. Presiona **⌘R** para ejecutar
-3. Al abrir, la app solicitará permisos de notificaciones → **Permitir**
+Para instrucciones detalladas, consulta la [Guía de Instalación Completa](#instalación-paso-a-paso).
 
 ---
 
-## 📖 Uso de la Aplicación
+## 📖 Uso Destacado
 
-### Sistema de Notificaciones
+### 🔔 Notificaciones con Solicitudes
 
-#### En Inicio (HomeView)
-- Icono de **campana 🔔** en esquina superior derecha
-- **Badge rojo** muestra el número de notificaciones no leídas
-- Toca para ver todas las notificaciones
+La campana ahora muestra **dos tipos** de contenido:
 
-#### En Perfil
-- Mismo botón de notificaciones disponible
-- Ve estadísticas de seguidores y solicitudes pendientes
-- **Badge rojo** en "Solicitudes" si hay pendientes
+1. **Solicitudes de Seguimiento** (Sección superior)
+   - Acepta o rechaza directamente
+   - Badge naranja con icono ⏰
+   
+2. **Notificaciones Normales** (Sección inferior)
+   - Nuevos seguidores
+   - Solicitudes aceptadas
+   - Recomendaciones
 
-#### Notificaciones Push
-- Aparecen en **pantalla de bloqueo** incluso con la app cerrada
-- Banner en la parte superior si la app está abierta
-- Toca la notificación para abrir la app y ver detalles
+**Badge inteligente**: `notificaciones no leídas + solicitudes pendientes`
 
-### Sistema Social
+### ⭐ Reseñas Completas
 
-#### Buscar Usuarios
-1. Ve a pestaña **"Buscar"**
-2. Selecciona filtro **"Usuarios"**
-3. Escribe el nombre del usuario
-4. Toca un perfil para verlo
+**Ver tus reseñas**:
+1. Ve a tu Perfil
+2. Selecciona pestaña **"Reseñas"**
+3. Verás:
+   - Poster de la película
+   - **Estrellas** (1-5)
+   - **Texto completo** de tu opinión
 
-#### Seguir a Alguien
-1. Entra en el perfil de un usuario
-2. Toca **"Seguir"** (cuentas públicas) o **"Solicitar Seguir"** (cuentas privadas)
-3. Si es privado, espera a que acepte tu solicitud
-4. Recibirás una notificación cuando te acepte
-
-#### Gestionar Solicitudes
-1. Ve a tu **Perfil**
-2. Si tienes solicitudes, verás un botón con badge rojo
-3. Toca **"Solicitudes"**
-4. **Acepta** o **Rechaza** cada solicitud
-5. El usuario será notificado si aceptas
-
-#### Eliminar Seguidores/Seguidos
-1. Ve a tu **Perfil**
-2. Toca **"Seguidores"** o **"Siguiendo"**
-3. Al lado de cada usuario verás un botón **"X" rojo**
-4. Toca para eliminar:
-   - En "Seguidores": Quitas a alguien que te sigue
-   - En "Siguiendo": Dejas de seguir a alguien
-
-#### Cancelar Solicitud Pendiente
-1. Ve al perfil del usuario al que enviaste solicitud
-2. Verás botón **"Cancelar Solicitud"** en rojo
-3. Toca para cancelar
-
-### Reseñas de Películas
-
-#### Crear una Reseña
-1. Ve al detalle de una película
-2. Toca el icono **👁️ (Ojo)**
-3. Se abre la hoja de valoración
-4. Selecciona **estrellas** (1-5)
-5. Escribe tu **opinión** (opcional, máx. 280 caracteres)
-6. Toca **"Publicar Valoración"**
-
-#### Ver Reseñas de Otros
+**Ver reseñas de otros**:
 1. Busca un usuario
-2. Entra en su perfil
-3. Selecciona pestaña **"Reseñas"**
-4. Verás sus películas con estrellas y textos completos
+2. Entra en su perfil (si es público o te sigue)
+3. Pestaña **"Reseñas"**
+4. Lee sus valoraciones completas
 
 ---
 
-## 🏗️ Arquitectura del Proyecto
+## 🎯 Características v2.1
 
-```
-aura-movies/
-│
-├── App/                           # 📱 Aplicación iOS
-│   ├── AuraMovies/
-│   │   ├── App/                   # Configuración principal
-│   │   │   ├── AuraMoviesApp.swift
-│   │   │   ├── AppDelegate.swift  # ⭐ NUEVO: Manejo de notificaciones
-│   │   │   ├── Assets.xcassets/
-│   │   │   └── Config.xcconfig
-│   │   │
-│   │   ├── Core/                  # Lógica central
-│   │   │   ├── FavoritesManager.swift
-│   │   │   ├── HistoryManager.swift
-│   │   │   ├── NotificationManager.swift  # ⭐ NUEVO
-│   │   │   └── Networking/
-│   │   │       ├── AuthService.swift
-│   │   │       ├── MovieService.swift
-│   │   │       └── UserService.swift
-│   │   │
-│   │   ├── Features/              # Módulos funcionales
-│   │   │   ├── Auth/
-│   │   │   │   ├── LoginView.swift
-│   │   │   │   ├── VerificationView.swift
-│   │   │   │   └── ResetPasswordView.swift
-│   │   │   │
-│   │   │   ├── MoviesList/
-│   │   │   │   ├── Models/
-│   │   │   │   ├── ViewModels/
-│   │   │   │   └── Views/
-│   │   │   │       ├── HomeView.swift  # ⭐ ACTUALIZADO: Notificaciones
-│   │   │   │       ├── ProfileView.swift  # ⭐ ACTUALIZADO: Stats + Notif
-│   │   │   │       ├── SearchView.swift
-│   │   │   │       ├── NotificationsView.swift  # ⭐ NUEVO
-│   │   │   │       ├── UserProfileView.swift  # ⭐ NUEVO
-│   │   │   │       └── FollowRequestsView.swift  # ⭐ NUEVO
-│   │   │   │
-│   │   │   └── MovieDetail/
-│   │   │       ├── MovieDetailView.swift
-│   │   │       ├── ActorDetailView.swift
-│   │   │       └── RateMovieSheet.swift  # ⭐ NUEVO
-│   │   │
-│   │   └── Info.plist
-│   │
-│   └── AuraMovies.xcodeproj
-│
-└── Backend/                       # 🖥️ Servidor Vapor
-    ├── Sources/
-    │   └── Backend/
-    │       ├── Controllers/
-    │       │   ├── AuthController.swift
-    │       │   ├── MoviesInteractionController.swift
-    │       │   ├── UserSearchController.swift  # ⭐ ACTUALIZADO
-    │       │   ├── NotificationController.swift  # ⭐ NUEVO
-    │       │   └── PushNotificationController.swift  # ⭐ NUEVO
-    │       │
-    │       ├── Models/
-    │       │   ├── User.swift
-    │       │   ├── Token.swift
-    │       │   ├── UserMovie.swift
-    │       │   ├── UserFollow.swift  # ⭐ NUEVO
-    │       │   ├── Notification.swift  # ⭐ NUEVO
-    │       │   └── DeviceToken.swift  # ⭐ NUEVO
-    │       │
-    │       ├── Migrations/
-    │       │   ├── CreateUser.swift
-    │       │   ├── CreateToken.swift
-    │       │   ├── CreateUserMovie.swift
-    │       │   ├── CreateUserFollow.swift  # ⭐ NUEVO
-    │       │   ├── CreateNotification.swift  # ⭐ NUEVO
-    │       │   └── CreateDeviceToken.swift  # ⭐ NUEVO
-    │       │
-    │       └── main.swift
-    │
-    ├── Package.swift
-    └── .env
-```
+### ✅ Mejoras Implementadas
+
+- [x] **Solicitudes en la Campana**: Gestiona todo desde un solo lugar
+- [x] **Badge Mejorado**: Notificaciones + Solicitudes
+- [x] **Reseñas Completas**: Visualización de estrellas y comentarios
+- [x] **Login con Email**: Inicia sesión con usuario o correo
+- [x] **Perfil Limpio**: Solicitudes movidas a notificaciones
 
 ---
 
-## 📡 Endpoints de la API
+## 📡 Endpoints Principales
 
-### Autenticación
 ```
+# Autenticación
 POST   /auth/register              # Crear cuenta
-POST   /auth/verify                # Verificar código email
-POST   /auth/login                 # Iniciar sesión
-POST   /auth/check-email           # Verificar si email existe
-POST   /auth/forgot-password       # Solicitar reset de contraseña
-POST   /auth/reset-password        # Confirmar reset
-PUT    /auth/update-profile        # Actualizar perfil
-PUT    /auth/change-password       # Cambiar contraseña
-POST   /auth/upload-avatar         # Subir foto de perfil
-PUT    /auth/update-privacy        # Cambiar privacidad
-```
+POST   /auth/login                 # Login con usuario o email ⭐ NUEVO
 
-### Sistema Social
-```
+# Sistema Social
 GET    /users/search?q=...         # Buscar usuarios
-GET    /users/:id/profile          # Ver perfil
-POST   /users/:id/follow           # Seguir usuario
-DELETE /users/:id/unfollow         # Dejar de seguir
-DELETE /users/:id/remove-follower  # ⭐ Eliminar seguidor
-GET    /users/follow-requests      # Ver solicitudes
-POST   /users/follow-requests/:id/accept   # Aceptar
-POST   /users/follow-requests/:id/reject   # Rechazar
-GET    /users/:id/followers        # Lista de seguidores
-GET    /users/:id/following        # Lista de siguiendo
-GET    /users/stats                # Estadísticas propias
-```
+POST   /users/:id/follow           # Seguir
+DELETE /users/:id/remove-follower  # Eliminar seguidor
 
-### Notificaciones
-```
-GET    /notifications              # Obtener todas
-PUT    /notifications/:id/read     # Marcar como leída
-PUT    /notifications/read-all     # Marcar todas
-DELETE /notifications/:id          # Eliminar una
-GET    /notifications/unread-count # Contador no leídas
-```
+# Notificaciones
+GET    /notifications              # Obtener todas + solicitudes
+GET    /users/follow-requests      # Solicitudes pendientes
 
-### Push Notifications
-```
-POST   /users/device-token         # Registrar token APNs
-DELETE /users/device-token         # Eliminar token
-```
-
-### Películas
-```
-GET    /movies/profile             # Mis películas (favoritas/vistas)
-GET    /movies/public-profile/:id  # Películas de otro usuario
-POST   /movies/interact            # Marcar fav/vista/reseña
-```
-
----
-
-## 🔔 Sistema de Notificaciones - Flujo Completo
-
-### 1. Registro del Dispositivo
-```
-App abre → AppDelegate solicita permisos
-         → Usuario acepta
-         → iOS genera Device Token
-         → Token enviado a Backend
-         → Backend guarda en DB
-```
-
-### 2. Evento (Ej: Alguien te sigue)
-```
-Usuario A → Sigue a Usuario B
-          → Backend crea Follow
-          → Backend crea Notification en DB
-          → Backend busca device_tokens de B
-          → Backend envía Push via APNs
-          → iOS de B recibe Push
-          → Aparece en pantalla de bloqueo
-```
-
-### 3. Usuario Abre la App
-```
-Usuario toca notificación Push
-→ App se abre
-→ AppDelegate llama a NotificationManager
-→ NotificationManager sincroniza con backend
-→ Actualiza badge y lista
-→ Usuario ve notificación en la app
-```
-
----
-
-## 🧪 Testing
-
-### Probar Notificaciones Push
-
-#### En Simulador (Push Locales)
-```bash
-# Las notificaciones locales funcionan
-# Verás banners en la parte superior
-```
-
-#### En Dispositivo Real (Push Reales)
-```bash
-# 1. Conecta iPhone físico
-# 2. Configura certificado .p8 de Apple (ver sección Producción)
-# 3. Ejecuta la app
-# 4. Acepta permisos
-# 5. Cierra la app completamente
-# 6. Desde otra cuenta, sigue al usuario
-# 7. Notificación aparece en pantalla de bloqueo
-```
-
-### Probar Sistema Social
-
-#### Crear Cuentas de Prueba
-```
-Usuario A (Público):
-- Email: testA@gmail.com
-- Username: testA
-
-Usuario B (Privado):
-- Email: testB@gmail.com  
-- Username: testB
-- Activar "Cuenta Privada" en Editar Perfil
-```
-
-#### Flujo de Seguimiento
-```
-1. testA busca a testB
-2. testA ve perfil de testB (candado 🔒)
-3. testA toca "Solicitar Seguir"
-4. testB recibe notificación push
-5. testB abre app → Ve badge rojo en Solicitudes
-6. testB acepta solicitud
-7. testA recibe notificación "Solicitud aceptada"
-8. testA puede ver películas de testB
+# Películas
+POST   /movies/interact            # Marcar fav/vista/reseña completa
 ```
 
 ---
@@ -505,61 +278,29 @@ Usuario B (Privado):
 
 - ✅ **Contraseñas hasheadas** con Bcrypt (factor 12)
 - ✅ **Tokens UUID** únicos por sesión
+- ✅ **Login flexible**: Busca por username o email
 - ✅ **Validaciones** en frontend y backend
 - ✅ **Variables sensibles** en `.env` (excluido de Git)
-- ✅ **CORS** configurado para desarrollo
 - ✅ **Device tokens** almacenados de forma segura
-- ✅ **Permisos de notificaciones** gestionados por iOS
 - ⚠️ En producción, usa **HTTPS** siempre
 
 ---
 
-## 📝 Roadmap
+## 📝 Changelog
 
-### ✅ Completado
-- [x] Sistema de autenticación completo
-- [x] Exploración de películas (TMDB)
-- [x] Favoritos y películas vistas
-- [x] Sistema de reseñas con estrellas
-- [x] Perfiles de usuario con avatar
-- [x] Sistema social (seguir/seguidores)
-- [x] Cuentas privadas con solicitudes
-- [x] Notificaciones en la app
-- [x] Notificaciones push reales
-- [x] Eliminar seguidores/seguidos
-- [x] Login con email
-- [x] Iconos en categorías
-- [x] Recuperación de contraseña
+### v2.1 (Última versión)
+- ✨ Solicitudes de seguimiento integradas en notificaciones
+- ✨ Badge inteligente (notificaciones + solicitudes)
+- ✨ Reseñas completas con estrellas y texto visible
+- ✨ Login con email además de usuario
+- 🐛 Corrección de errores de sincronización
+- 🎨 Perfil simplificado y más limpio
 
-### 🚧 En Desarrollo
-- [ ] Comentarios en películas
-- [ ] Feed de actividad de seguidos
-- [ ] Listas personalizadas de películas
-
-### 🔮 Futuras Funcionalidades
-- [ ] Modo offline con caché
-- [ ] Compartir películas con amigos
-- [ ] Integración con servicios de streaming
-- [ ] Widget de iOS
-- [ ] Dark theme personalizable
-- [ ] Mensajes directos entre usuarios
-
----
-
-## 📞 Soporte
-
-¿Necesitas ayuda?
-
-1. **Revisa la documentación** en este README
-2. **Abre un Issue** en GitHub con:
-   - Descripción del problema
-   - Logs del backend y la app
-   - Versión de Xcode y macOS
-3. **Consulta la documentación oficial**:
-   - [TMDB API Docs](https://developers.themoviedb.org/3)
-   - [Vapor Docs](https://docs.vapor.codes/4.0/)
-   - [SwiftUI Docs](https://developer.apple.com/documentation/swiftui)
-   - [APNs Guide](https://developer.apple.com/documentation/usernotifications)
+### v2.0
+- ✨ Sistema social completo
+- ✨ Notificaciones push reales
+- ✨ Perfiles públicos/privados
+- ✨ Sistema de reseñas
 
 ---
 
@@ -584,5 +325,5 @@ Usuario B (Privado):
   <br><br>
   Desarrollado con ❤️ usando Swift, SwiftUI y Vapor
   <br>
-  <b>v2.0 - Sistema Social y Notificaciones Push</b>
+  <b>v2.1 - Notificaciones Mejoradas y Reseñas Completas</b>
 </p>

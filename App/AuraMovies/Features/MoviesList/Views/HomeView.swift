@@ -5,6 +5,9 @@ struct HomeView: View {
     @State private var notificationManager = NotificationManager.shared
     @State private var showNotifications = false
     
+    // 🆕 Estado para contar solicitudes pendientes
+    @State private var pendingRequestsCount = 0
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -35,8 +38,11 @@ struct HomeView: View {
                                 .foregroundColor(.blue)
                                 .font(.title3)
                             
-                            if notificationManager.unreadCount > 0 {
-                                Text("\(notificationManager.unreadCount)")
+                            // 🔔 BADGE con total de notificaciones + solicitudes
+                            let totalBadge = notificationManager.unreadCount + pendingRequestsCount
+                            
+                            if totalBadge > 0 {
+                                Text("\(totalBadge)")
                                     .font(.caption2)
                                     .bold()
                                     .foregroundColor(.white)
@@ -60,11 +66,25 @@ struct HomeView: View {
             }
             .task {
                 await viewModel.loadAllSections()
+                await loadPendingRequests()
             }
             .refreshable {
                 await viewModel.loadAllSections()
                 await notificationManager.checkForNewNotifications()
+                await loadPendingRequests()
             }
+        }
+    }
+    
+    // 🆕 Cargar solicitudes pendientes
+    private func loadPendingRequests() async {
+        do {
+            let stats = try await UserService.shared.getUserStats()
+            await MainActor.run {
+                pendingRequestsCount = stats.pendingRequestsCount
+            }
+        } catch {
+            print("❌ Error cargando estadísticas: \(error)")
         }
     }
 }

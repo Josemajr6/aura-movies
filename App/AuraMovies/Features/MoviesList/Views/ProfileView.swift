@@ -8,7 +8,6 @@ struct ProfileView: View {
     
     // Estado para mostrar hojas
     @State private var showingEditSheet = false
-    @State private var showingFollowRequests = false
     @State private var showFollowers = false
     @State private var showFollowing = false
     
@@ -101,7 +100,7 @@ struct ProfileView: View {
                         }
                     }
                     
-                    // ESTADÍSTICAS MEJORADAS
+                    // ESTADÍSTICAS SIMPLIFICADAS (Sin solicitudes)
                     HStack(spacing: 40) {
                         // Seguidores
                         Button(action: { showFollowers = true }) {
@@ -130,48 +129,8 @@ struct ProfileView: View {
                             }
                         }
                         .buttonStyle(.plain)
-                        
-                        // Solicitudes (solo si hay pendientes)
-                        if let pendingCount = stats?.pendingRequestsCount, pendingCount > 0 {
-                            Button(action: { showingFollowRequests = true }) {
-                                VStack(spacing: 4) {
-                                    ZStack(alignment: .topTrailing) {
-                                        Text("\(pendingCount)")
-                                            .font(.title3)
-                                            .bold()
-                                            .foregroundColor(.primary)
-                                        
-                                        Circle()
-                                            .fill(Color.red)
-                                            .frame(width: 8, height: 8)
-                                            .offset(x: 10, y: -5)
-                                    }
-                                    Text("Solicitudes")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                            .buttonStyle(.plain)
-                        }
                     }
                     .padding(.top, 5)
-                    
-                    // Botón de Solicitudes más visible (si hay pendientes)
-                    if let pendingCount = stats?.pendingRequestsCount, pendingCount > 0 {
-                        Button(action: { showingFollowRequests = true }) {
-                            HStack {
-                                Image(systemName: "person.crop.circle.badge.clock")
-                                Text("\(pendingCount) solicitud\(pendingCount > 1 ? "es" : "") pendiente\(pendingCount > 1 ? "s" : "")")
-                                    .fontWeight(.semibold)
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(Color.blue.opacity(0.1))
-                            .foregroundColor(.blue)
-                            .cornerRadius(12)
-                        }
-                        .padding(.horizontal)
-                    }
                 }
                 .padding(.vertical, 30)
                 .frame(maxWidth: .infinity)
@@ -280,13 +239,6 @@ struct ProfileView: View {
             }
             .sheet(isPresented: $showingEditSheet) {
                 EditProfileView(currentUser: authService.currentUser)
-                    .onDisappear {
-                        // Recargar estadísticas al cerrar
-                        Task { await loadStats() }
-                    }
-            }
-            .sheet(isPresented: $showingFollowRequests) {
-                FollowRequestsView()
                     .onDisappear {
                         // Recargar estadísticas al cerrar
                         Task { await loadStats() }

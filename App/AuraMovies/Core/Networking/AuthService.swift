@@ -160,6 +160,7 @@ class AuthService: ObservableObject {
         return (response as? HTTPURLResponse)?.statusCode == 200
     }
     
+    
     // MARK: - Login
     func login(username: String, password: String) async throws -> Bool {
         guard let url = URL(string: "\(baseURL)/login") else { throw AuthError.invalidURL }
@@ -168,6 +169,7 @@ class AuthService: ObservableObject {
         request.httpMethod = "POST"
         request.timeoutInterval = 10
         
+        // 🆕 USAMOS EL INPUT TAL CUAL (puede ser username o email)
         let loginString = "\(username):\(password)"
         guard let loginData = loginString.data(using: .utf8) else { throw AuthError.invalidCredentials }
         let base64LoginString = loginData.base64EncodedString()
@@ -188,7 +190,6 @@ class AuthService: ObservableObject {
                 }
                 // INTENTO 2: Fallback a TokenResponse (Legacy)
                 else if let tokenResponse = try? JSONDecoder().decode(TokenResponse.self, from: data) {
-                    // CORREGIDO: Se añade avatar: nil
                     let tempUser = UserDTO(id: UUID(), username: username, email: "", avatar: nil, isPrivate: false)
                     self.saveSession(token: tokenResponse.value, user: tempUser)
                     return true
