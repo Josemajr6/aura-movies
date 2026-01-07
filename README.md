@@ -18,6 +18,81 @@
 
 ---
 
+## 📸 Capturas de Pantalla
+
+### 🔐 Autenticación y Exploración
+
+<table>
+  <tr>
+    <td align="center" width="25%">
+      <img src="Screenshots/login.png" width="100%" alt="Login"/><br/>
+      <b>Login</b><br/>
+      <sub>Autenticación con email/usuario</sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="Screenshots/home.png" width="100%" alt="Inicio"/><br/>
+      <b>Inicio</b><br/>
+      <sub>Listas curadas de películas</sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="Screenshots/detail.png" width="100%" alt="Detalle"/><br/>
+      <b>Detalle</b><br/>
+      <sub>Info completa + trailer</sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="Screenshots/actor.png" width="100%" alt="Actor"/><br/>
+      <b>Actor</b><br/>
+      <sub>Biografía + filmografía</sub>
+    </td>
+  </tr>
+</table>
+
+### 👤 Perfil y Social
+
+<table>
+  <tr>
+    <td align="center" width="25%">
+      <img src="Screenshots/profile.png" width="100%" alt="Perfil"/><br/>
+      <b>Mi Perfil</b><br/>
+      <sub>Favoritas y estadísticas</sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="Screenshots/reviews.png" width="100%" alt="Reseñas"/><br/>
+      <b>Reseñas</b><br/>
+      <sub>Valoraciones con estrellas</sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="Screenshots/notifications.png" width="100%" alt="Notificaciones"/><br/>
+      <b>Notificaciones</b><br/>
+      <sub>Push + solicitudes</sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="Screenshots/user_search.png" width="100%" alt="Usuarios"/><br/>
+      <b>Usuarios</b><br/>
+      <sub>Búsqueda de cinéfilos</sub>
+    </td>
+  </tr>
+</table>
+
+### 🔍 Búsqueda y Categorías
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="Screenshots/search.png" width="100%" alt="Búsqueda"/><br/>
+      <b>Búsqueda</b><br/>
+      <sub>Encuentra películas y actores</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="Screenshots/categories.png" width="100%" alt="Categorías"/><br/>
+      <b>Categorías</b><br/>
+      <sub>Explora por géneros</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
 ## ✨ ¿Qué hace especial a AuraMovies?
 
 ### 🎬 **Explora el Mundo del Cine**
