@@ -242,7 +242,7 @@ struct AuthController: RouteCollection {
     }
     
     // MARK: - Verificación
-    func verifyCode(req: Request) async throws -> Token {
+    func verifyCode(req: Request) async throws -> LoginResponse {
         let input = try req.content.decode(VerifyRequest.self)
         
         guard let user = try await User.query(on: req.db)
@@ -259,16 +259,28 @@ struct AuthController: RouteCollection {
             throw Abort(.unauthorized, reason: "Código de verificación incorrecto")
         }
         
+        // Marcar como verificado
         user.isVerified = true
-        user.verificationCode = nil // Limpiamos el código una vez usado
+        user.verificationCode = nil
         try await user.save(on: req.db)
         
         req.logger.info("✅ Usuario verificado: \(user.username)")
         
+        // Crear token
         let token = try Token(value: UUID().uuidString, userID: user.requireID())
         try await token.save(on: req.db)
         
-        return token
+        // 🔥 DEVOLVER TOKEN + USUARIO COMPLETO (no un usuario temporal)
+        return LoginResponse(
+            token: token.value,
+            user: UserDTO(
+                id: try user.requireID(),
+                username: user.username,  // ✅ El username real, no el email
+                email: user.email,
+                avatar: user.avatar,
+                isPrivate: user.isPrivate
+            )
+        )
     }
     
     // MARK: - Reenviar código

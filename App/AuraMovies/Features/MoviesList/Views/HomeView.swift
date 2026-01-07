@@ -5,7 +5,7 @@ struct HomeView: View {
     @State private var notificationManager = NotificationManager.shared
     @State private var showNotifications = false
     
-    // 🆕 Estado para contar solicitudes pendientes
+    // Estado para contar solicitudes pendientes
     @State private var pendingRequestsCount = 0
     
     var body: some View {
@@ -33,22 +33,34 @@ struct HomeView: View {
                     Button {
                         showNotifications = true
                     } label: {
-                        ZStack(alignment: .topTrailing) {
+                        // 🔔 BADGE COMPLETAMENTE SEPARADO
+                        let totalBadge = notificationManager.unreadCount + pendingRequestsCount
+                        
+                        ZStack {
+                            // Icono de campana
                             Image(systemName: "bell.fill")
                                 .foregroundColor(.blue)
                                 .font(.title3)
+                                .frame(width: 24, height: 24)
                             
-                            // 🔔 BADGE con total de notificaciones + solicitudes
-                            let totalBadge = notificationManager.unreadCount + pendingRequestsCount
-                            
+                            // Badge posicionado fuera
                             if totalBadge > 0 {
-                                Text("\(totalBadge)")
-                                    .font(.caption2)
-                                    .bold()
-                                    .foregroundColor(.white)
-                                    .padding(4)
-                                    .background(Circle().fill(Color.red))
-                                    .offset(x: 10, y: -10)
+                                VStack {
+                                    HStack {
+                                        Spacer()
+                                        Text("\(totalBadge)")
+                                            .font(.system(size: 11, weight: .bold))
+                                            .foregroundColor(.white)
+                                            .padding(4)
+                                            .background(
+                                                Circle()
+                                                    .fill(Color.red)
+                                                    .frame(minWidth: 18, minHeight: 18)
+                                            )
+                                    }
+                                    Spacer()
+                                }
+                                .frame(width: 40, height: 40)
                             }
                         }
                     }
@@ -76,7 +88,7 @@ struct HomeView: View {
         }
     }
     
-    // 🆕 Cargar solicitudes pendientes
+    // Cargar solicitudes pendientes
     private func loadPendingRequests() async {
         do {
             let stats = try await UserService.shared.getUserStats()

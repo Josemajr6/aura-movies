@@ -50,7 +50,7 @@ struct VerificationView: View {
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(16)
                         .frame(maxWidth: 280)
-                        .onChange(of: code) { _, newValue in
+                        .onChange(of: code) { oldValue, newValue in
                             // Limitar a 6 caracteres
                             if newValue.count > 6 {
                                 code = String(newValue.prefix(6))
@@ -95,15 +95,14 @@ struct VerificationView: View {
                 Spacer()
             }
         }
-        // Alerta de éxito al verificar
-        .alert("¡Verificado!", isPresented: $showSuccessAlert) {
+        // ✅ Alerta de éxito - Ahora inicia sesión automáticamente
+        .alert("¡Cuenta Verificada!", isPresented: $showSuccessAlert) {
             Button("Continuar") {
-                // Al verificar, cerramos esta pantalla y el usuario ya podrá hacer login
-                // Opcionalmente podrías hacer login automático aquí si guardaste pass
+                // Ya está autenticado, solo cerramos
                 dismiss()
             }
         } message: {
-            Text("Tu correo ha sido confirmado correctamente. Ya puedes iniciar sesión.")
+            Text("Tu correo ha sido confirmado. Ya puedes usar la app.")
         }
         // Alerta de reenvío
         .alert("Reenviar código", isPresented: $showingResendAlert) {
@@ -119,6 +118,7 @@ struct VerificationView: View {
         
         Task {
             do {
+                // ✅ Ahora verifyCode devuelve Bool y guarda la sesión internamente
                 let success = try await AuthService.shared.verifyCode(email: email, code: code)
                 await MainActor.run {
                     isLoading = false
@@ -132,7 +132,8 @@ struct VerificationView: View {
             } catch {
                 await MainActor.run {
                     isLoading = false
-                    errorMessage = "Error de conexión: \(error.localizedDescription)"
+                    errorMessage = "Código incorrecto o expirado."
+                    code = ""
                 }
             }
         }
@@ -143,12 +144,12 @@ struct VerificationView: View {
             do {
                 let sent = try await AuthService.shared.resendCode(email: email)
                 await MainActor.run {
-                    resendMessage = sent ? "Código reenviado. Revisa tu bandeja de entrada." : "No se pudo reenviar el código."
+                    resendMessage = sent ? "✅ Código reenviado. Revisa tu bandeja de entrada." : "❌ No se pudo reenviar el código."
                     showingResendAlert = true
                 }
             } catch {
                 await MainActor.run {
-                    resendMessage = "Error al conectar con el servidor."
+                    resendMessage = "❌ Error al conectar con el servidor."
                     showingResendAlert = true
                 }
             }

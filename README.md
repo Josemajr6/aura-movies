@@ -3,327 +3,449 @@
 <p align="center">
   <img src="App/AuraMovies/App/Assets.xcassets/AppIcon.appiconset/appiconauramovies.png" width="120" alt="Logo AuraMovies">
   <br>
-  <b>Explora, descubre y organiza tu vida cinematográfica en iOS 🍿</b>
-</p>
-
-**AuraMovies** es una aplicación nativa de iOS desarrollada en **SwiftUI** con backend en **Vapor** que ofrece una experiencia inmersiva para descubrir películas. Utilizando la API de **TMDB (The Movie Database)** y un sistema completo de autenticación con MongoDB, la app permite navegar entre películas, actores y géneros, gestionando tu perfil de usuario de forma segura.
-
----
-
-## 📸 Capturas de Pantalla
-
-<p align="center">
-  <img src="screenshots/home.png" width="200" alt="Inicio"/>
-  <img src="screenshots/detail.png" width="200" alt="Detalle"/>
-  <img src="screenshots/profile.png" width="200" alt="Perfil"/>
-  <img src="screenshots/notifications.png" width="200" alt="Notificaciones"/>
+  <b>Tu compañero cinematográfico definitivo para iOS 🍿</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/search.png" width="200" alt="Búsqueda"/>
-  <img src="screenshots/reviews.png" width="200" alt="Reseñas"/>
-  <img src="screenshots/categories.png" width="200" alt="Categorías"/>
-  <img src="screenshots/social.png" width="200" alt="Social"/>
+  <img src="https://img.shields.io/badge/iOS-17.0+-blue.svg" alt="iOS 17.0+">
+  <img src="https://img.shields.io/badge/Swift-5.9+-orange.svg" alt="Swift 5.9+">
+  <img src="https://img.shields.io/badge/Vapor-4.x-green.svg" alt="Vapor 4.x">
+  <img src="https://img.shields.io/badge/MongoDB-6.0+-brightgreen.svg" alt="MongoDB 6.0+">
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License MIT">
 </p>
 
-### 🎯 Características Destacadas
-
-| Característica | Descripción | Screenshot |
-|---------------|-------------|------------|
-| **🏠 Inicio** | Explora listas curadas de películas: Trending, Estrenos, Populares y Top Rated | `screenshots/home.png` |
-| **🎬 Detalle de Película** | Sinopsis completa, trailers, reparto y recomendaciones | `screenshots/detail.png` |
-| **⭐ Sistema de Reseñas** | Valora películas con estrellas y escribe opiniones | `screenshots/reviews.png` |
-| **👤 Perfil de Usuario** | Gestiona tus favoritas, reseñas y seguidores | `screenshots/profile.png` |
-| **🔔 Notificaciones** | Push reales y solicitudes de seguimiento integradas | `screenshots/notifications.png` |
-| **🔍 Búsqueda Avanzada** | Busca películas, actores y usuarios | `screenshots/search.png` |
-| **🎭 Categorías** | Explora por géneros con iconos únicos | `screenshots/categories.png` |
-| **🤝 Red Social** | Sigue usuarios, perfiles públicos/privados | `screenshots/social.png` |
+**AuraMovies** es una red social cinematográfica para iOS donde puedes **descubrir películas**, **escribir reseñas**, **seguir a otros cinéfilos** y recibir **notificaciones en tiempo real** sobre tu actividad. Conecta con la comunidad, comparte tus opiniones y nunca te pierdas un estreno.
 
 ---
 
-## ✨ Características Principales
+## ✨ ¿Qué hace especial a AuraMovies?
 
-### 🎭 Exploración de Películas
-- **Listas Dinámicas**: "Estrenos", "Populares", "Top Rated" y la exclusiva "Selección AuraMovies" (Trending)
-- **Detalle Completo**: Sinopsis, puntuación, año, trailers de YouTube integrados y reparto
-- **Navegación Recursiva**: Película → Actor → Filmografía → Película (navegación infinita)
-- **Búsqueda Inteligente**: Buscador en tiempo real con *debounce* para optimizar llamadas a la API
-- **Categorías con Iconos**: Explora películas por género con iconos únicos y scroll infinito
+### 🎬 **Explora el Mundo del Cine**
+Descubre películas de todas las épocas con listas curadas: estrenos, populares, mejor valoradas y nuestra exclusiva "Selección AuraMovies". Navega desde películas a actores y de vuelta, con información completa de TMDB.
 
-### 👤 Sistema de Usuario
-- **Autenticación Segura**: Registro, login y verificación por email
-- **Login Flexible**: Inicia sesión con usuario o email
-- **Verificación por Email**: Código de 6 dígitos enviado a tu correo
-- **Validaciones Robustas**: Usuario, email y contraseña validados en tiempo real
-- **Sign in with Apple**: Autenticación rápida con tu Apple ID
-- **Recuperación de Contraseña**: Sistema completo vía email
-- **Persistencia**: Sesiones guardadas de forma segura
+### ⭐ **Escribe y Lee Reseñas**
+Valora películas con 1 a 5 estrellas y escribe tu opinión. Lee las reseñas de otros usuarios y descubre qué piensan de tus películas favoritas.
 
-### 🤝 Sistema Social
-- **Perfiles de Usuario**: Ver perfiles de otros usuarios con películas favoritas y reseñas completas
-- **Seguir Usuarios**: Sistema de seguidores y seguidos
-- **Cuentas Privadas**: Opción de perfil privado con solicitudes de seguimiento
-- **Gestión de Seguidores**: Acepta/rechaza solicitudes desde notificaciones, elimina seguidores
-- **Búsqueda de Usuarios**: Encuentra otros cinéfilos por nombre
+### 🤝 **Conecta con Cinéfilos**
+Sigue a otros usuarios, mira sus perfiles y descubre nuevas películas a través de sus gustos. Cuentas públicas y privadas para controlar tu privacidad.
 
-### 🔔 Sistema de Notificaciones
-- **Notificaciones Push Reales**: Recibe notificaciones en tu dispositivo incluso con la app cerrada
-- **Badge Inteligente**: Contador de notificaciones + solicitudes pendientes
-- **Solicitudes Integradas**: Gestiona solicitudes directamente desde la campana 🔔
-- **Tipos de Notificaciones**:
-  - 🔵 Nuevo seguidor
-  - ✅ Solicitud de seguimiento aceptada
-  - ⏰ Nueva solicitud de seguimiento pendiente
-  - ✨ Recomendaciones de películas
-  - 🔥 Películas en tendencia
-- **Sincronización Automática**: Verifica nuevas notificaciones cada 30 segundos
-- **Gestión Completa**: Marcar como leídas, eliminar, aceptar/rechazar solicitudes
+### 🔔 **Notificaciones en Tiempo Real**
+Recibe notificaciones push cuando alguien te sigue, acepta tu solicitud o cuando hay películas trending. Todo integrado en una sola vista.
 
-### 📱 Gestión Personal
-- ❤️ **Favoritos**: Guarda las películas que amas
-- ⭐ **Reseñas Completas**: Escribe valoraciones (1-5 estrellas) y opiniones de hasta 280 caracteres
-- 👁️ **Historial Detallado**: Películas vistas con estrellas y comentarios completos visibles
-- 📊 **Estadísticas**: Contador de favoritos, películas vistas, seguidores y siguiendo
-- 💾 **Sincronización**: Datos guardados localmente y en el servidor
-
-### 🎨 Diseño Moderno
-- **UI Adaptativa**: Soporte nativo para **Modo Oscuro**
-- **Animaciones Fluidas**: Transiciones y efectos visuales
-- **Diseño Premium**: Gradientes, sombras y elementos modernos
-- **Iconos por Género**: Cada categoría tiene su icono único (⚡ 🗺️ 😊 ❤️ 🌙)
-- **Responsive**: Optimizado para iPhone y iPad
+### 🎨 **Diseño Moderno y Fluido**
+Interfaz adaptativa con modo oscuro, animaciones suaves y efectos hápticos. Optimizada para todos los modelos de iPhone y iPad.
 
 ---
 
-## 📷 Guía para Añadir Capturas
+## 🚀 Características Principales
 
-### Crear carpeta de screenshots
+### 🎭 **Descubre Películas**
+- 📚 **4 Listas Dinámicas**: Trending, Estrenos, Populares y Top Rated
+- 🎬 **Detalles Completos**: Sinopsis, reparto, trailers de YouTube integrados
+- 🔍 **Búsqueda Inteligente**: Encuentra películas y actores en tiempo real
+- 🎨 **20+ Géneros**: Explora por categorías con iconos únicos
+- 🔄 **Navegación Infinita**: Película → Actor → Filmografía → Película
+
+### 👤 **Tu Perfil Cinematográfico**
+- ⭐ **Sistema de Reseñas**: Valora de 1-5 estrellas + texto de 280 caracteres
+- ❤️ **Películas Favoritas**: Guarda tus películas preferidas
+- 👁️ **Historial**: Lleva registro de todo lo que has visto
+- 📊 **Estadísticas**: Seguidores, siguiendo, favoritas y películas vistas
+- 📱 **Sincronización**: Tus datos seguros en la nube
+
+### 🤝 **Red Social Integrada**
+- 👥 **Búsqueda de Usuarios**: Encuentra otros amantes del cine
+- ➕ **Seguir/Seguidores**: Sistema completo de conexiones
+- 🔒 **Perfiles Privados**: Control total sobre quién ve tu actividad
+- 📬 **Solicitudes**: Gestiona solicitudes de seguimiento fácilmente
+- 👀 **Ver Perfiles**: Explora gustos de otros usuarios
+
+### 🔔 **Sistema de Notificaciones**
+- 📱 **Push Reales**: Recibe notificaciones incluso con la app cerrada
+- 🔴 **Badge Inteligente**: Contador de notificaciones + solicitudes
+- 📨 **Todo en Una Vista**: Notificaciones y solicitudes juntas
+- ✅ **Gestión Rápida**: Acepta/rechaza desde la campana
+- 🔄 **Auto-sincronización**: Actualización cada 30 segundos
+
+### 🎨 **Experiencia Premium**
+- 🌓 **Modo Oscuro**: Adaptación automática al sistema
+- ✨ **Animaciones Fluidas**: Transiciones suaves con hápticos
+- 📱 **Responsive**: Optimizado para todos los dispositivos iOS
+- 🎯 **Iconos Únicos**: Cada género con su identidad visual
+- 💎 **Diseño Moderno**: Gradientes, sombras y glassmorphism
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+### **Frontend**
+- **SwiftUI** - Framework de UI declarativa de Apple
+- **Swift 5.9+** - Lenguaje moderno y seguro
+- **MVVM + @Observable** - Arquitectura reactiva
+- **async/await** - Concurrencia nativa de Swift
+
+### **Backend**
+- **Vapor** - Framework web de Swift
+- **MongoDB** - Base de datos NoSQL flexible
+- **JWT** - Autenticación segura con tokens
+- **APNs** - Notificaciones push de Apple
+
+### **APIs**
+- **TMDB** - Base de datos de películas
+- **Gmail SMTP** - Envío de emails de verificación
+- **Apple Services** - Sign in with Apple + Notificaciones
+
+---
+
+## 📦 Instalación
+
+### **Requisitos Previos**
+
+Antes de empezar, asegúrate de tener instalado:
+
+- 💻 **macOS 13+** (Ventura o superior)
+- 🔨 **Xcode 15+** ([Descargar](https://developer.apple.com/xcode/))
+- 🍃 **MongoDB 6.0+** (veremos cómo instalarlo)
+- 📧 **Cuenta de Gmail** (para emails de verificación)
+
+---
+
+### **Paso 1: Descargar el Proyecto**
 
 ```bash
-# En la raíz del proyecto
-mkdir screenshots
-```
-
-### Tomar capturas en Xcode
-
-1. **Ejecuta la app** en simulador (iPhone 15 Pro recomendado)
-2. **Navega a cada pantalla**:
-   - Inicio (HomeView)
-   - Detalle de película
-   - Perfil
-   - Notificaciones con solicitudes
-   - Búsqueda
-   - Reseñas con estrellas
-   - Categorías
-   - Perfil de otro usuario
-3. **Captura**: `⌘ + S` (se guarda en Escritorio)
-4. **Renombra** los archivos:
-   ```
-   home.png
-   detail.png
-   profile.png
-   notifications.png
-   search.png
-   reviews.png
-   categories.png
-   social.png
-   ```
-5. **Mueve** a la carpeta `screenshots/`
-
-### Formato recomendado
-
-- **Resolución**: 1170 x 2532 (iPhone 15 Pro)
-- **Formato**: PNG
-- **Orientación**: Vertical
-- **Modo**: Claro o Oscuro (consistente)
-
----
-
-## 🛠️ Stack Tecnológico
-
-### Frontend (iOS)
-- **Lenguaje**: Swift 5.9+
-- **Framework**: SwiftUI con iOS 17+
-- **Arquitectura**: MVVM + Framework `@Observable`
-- **Concurrencia**: Swift Concurrency (`async/await`)
-- **Networking**: `URLSession` + `Codable`
-- **Persistencia**: UserDefaults + MongoDB (sincronización)
-- **Autenticación**: AuthenticationServices (Sign in with Apple)
-- **Notificaciones**: UserNotifications + APNs
-
-### Backend
-- **Framework**: Vapor 4.x
-- **Lenguaje**: Swift 5.9+
-- **Base de Datos**: MongoDB con FluentMongoDriver
-- **Email**: SMTP con Gmail
-- **Seguridad**: Bcrypt para hashing de contraseñas
-- **API**: RESTful con JSON
-- **Notificaciones Push**: Apple Push Notification service (APNs)
-
-### APIs Externas
-- **TMDB API**: The Movie Database
-- **Gmail SMTP**: Envío de correos de verificación
-- **Apple APNs**: Notificaciones push
-
----
-
-## 🚀 Instalación y Configuración
-
-### Requisitos Previos
-- macOS 13+
-- Xcode 15+
-- Swift 5.9+
-- MongoDB 6.0+
-- Cuenta de Gmail (para envío de emails)
-
-### Instalación Rápida
-
-```bash
-# 1. Clonar repositorio
+# Clonar repositorio
 git clone https://github.com/tu-usuario/aura-movies.git
 cd aura-movies
+```
 
-# 2. Instalar MongoDB
+---
+
+### **Paso 2: Instalar MongoDB**
+
+MongoDB es la base de datos que almacena usuarios, películas y notificaciones.
+
+#### **En macOS (Recomendado)**
+
+```bash
+# 1. Instalar Homebrew si no lo tienes
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 2. Añadir el repositorio de MongoDB
 brew tap mongodb/brew
-brew install mongodb-community
-brew services start mongodb-community
 
-# 3. Configurar Backend
+# 3. Instalar MongoDB Community Edition
+brew install mongodb-community@6.0
+
+# 4. Iniciar MongoDB automáticamente
+brew services start mongodb-community@6.0
+
+# 5. Verificar que funciona
+mongosh
+```
+
+En la consola de MongoDB (mongosh):
+```javascript
+// Ver bases de datos
+show dbs
+
+// Salir
+exit
+```
+
+#### **Comandos Útiles**
+
+```bash
+# Ver estado de MongoDB
+brew services list | grep mongodb
+
+# Detener MongoDB
+brew services stop mongodb-community
+
+# Reiniciar MongoDB
+brew services restart mongodb-community
+```
+
+---
+
+### **Paso 3: Configurar Gmail**
+
+Para enviar códigos de verificación, necesitas una **Contraseña de Aplicación** de Gmail.
+
+#### **Obtener Contraseña de Aplicación**
+
+1. 🌐 Entra a [myaccount.google.com](https://myaccount.google.com/)
+2. 🔐 Ve a **Seguridad** → **Verificación en dos pasos**
+3. ✅ Actívala si no la tienes (sigue las instrucciones)
+4. 🔑 Busca **Contraseñas de aplicación**
+5. ➕ Crea una nueva:
+   - App: **Correo**
+   - Dispositivo: **Otro** → "AuraMovies"
+6. 📋 Copia la contraseña (16 caracteres)
+
+> ⚠️ **Importante**: Usa esta contraseña, NO tu contraseña normal de Gmail.
+
+---
+
+### **Paso 4: Configurar el Backend**
+
+Edita el archivo `Backend/.env` con tus datos:
+
+```env
+# MongoDB (no cambiar si usaste Homebrew)
+MONGO_HOST=localhost
+MONGO_PORT=27017
+MONGO_DATABASE=auramovies_db
+
+# Puerto del servidor
+PORT=8080
+
+# Tu Gmail y contraseña de aplicación
+SMTP_EMAIL=tu-correo@gmail.com
+SMTP_PASSWORD=tu contraseña de aplicación aquí
+
+# API Key de TMDB (necesitas obtener una gratis)
+TMDB_API_KEY=tu_api_key_aqui
+```
+
+#### **Obtener API Key de TMDB (Gratis)**
+
+1. 🌐 Ve a [themoviedb.org](https://www.themoviedb.org/)
+2. 📝 Crea una cuenta gratuita
+3. ⚙️ Ve a **Configuración** → **API**
+4. 📋 Solicita una API Key (aprobación instantánea)
+5. 📄 Copia la **API Key (v3 auth)**
+
+---
+
+### **Paso 5: Configurar la App iOS**
+
+Crea el archivo `App/AuraMovies/App/Config.xcconfig`:
+
+```text
+TMDB_API_KEY = tu_api_key_de_tmdb_aqui
+```
+
+---
+
+### **Paso 6: Iniciar el Backend**
+
+```bash
+# Ve a la carpeta del backend
 cd Backend
-cp .env.example .env
-# Edita .env con tus credenciales
 
-# 4. Iniciar Backend
+# Compila (primera vez puede tardar)
+swift build
+
+# Inicia el servidor
 swift run
+```
 
-# 5. Abrir App
-cd ../App
+**✅ Deberías ver esto:**
+
+```
+🔗 Conectando a MongoDB: mongodb://localhost:27017/auramovies_db
+✅ Migraciones completadas
+🚀 Servidor iniciado en http://localhost:8080
+```
+
+> ⚠️ **Mantén esta terminal abierta** mientras uses la app.
+
+---
+
+### **Paso 7: Ejecutar la App**
+
+```bash
+# Abre otra terminal y ve a la carpeta de la app
+cd App
+
+# Abre Xcode
 open AuraMovies.xcodeproj
 ```
 
-Para instrucciones detalladas, consulta la [Guía de Instalación Completa](#instalación-paso-a-paso).
+**En Xcode:**
+
+1. 📱 Selecciona un simulador (iPhone 15 Pro recomendado)
+2. ▶️ Presiona **⌘ + R** para ejecutar
+3. 🔔 Permite las notificaciones cuando te lo pida
+4. 🎉 ¡Listo!
 
 ---
 
-## 📖 Uso Destacado
+### **Paso 8: Crear tu Cuenta**
 
-### 🔔 Notificaciones con Solicitudes
-
-La campana ahora muestra **dos tipos** de contenido:
-
-1. **Solicitudes de Seguimiento** (Sección superior)
-   - Acepta o rechaza directamente
-   - Badge naranja con icono ⏰
-   
-2. **Notificaciones Normales** (Sección inferior)
-   - Nuevos seguidores
-   - Solicitudes aceptadas
-   - Recomendaciones
-
-**Badge inteligente**: `notificaciones no leídas + solicitudes pendientes`
-
-### ⭐ Reseñas Completas
-
-**Ver tus reseñas**:
-1. Ve a tu Perfil
-2. Selecciona pestaña **"Reseñas"**
-3. Verás:
-   - Poster de la película
-   - **Estrellas** (1-5)
-   - **Texto completo** de tu opinión
-
-**Ver reseñas de otros**:
-1. Busca un usuario
-2. Entra en su perfil (si es público o te sigue)
-3. Pestaña **"Reseñas"**
-4. Lee sus valoraciones completas
+1. 📝 Toca **"Regístrate"** en la app
+2. 👤 Completa:
+   - Usuario (mínimo 3 caracteres)
+   - Email válido
+   - Contraseña (mínimo 8 caracteres)
+3. 📧 Revisa tu email para el código de 6 dígitos
+4. ✅ Introdúcelo en la app
+5. 🎬 ¡Empieza a explorar!
 
 ---
 
-## 🎯 Características v2.1
+## 🎯 Guía de Uso
 
-### ✅ Mejoras Implementadas
+### **Explorar Películas**
 
-- [x] **Solicitudes en la Campana**: Gestiona todo desde un solo lugar
-- [x] **Badge Mejorado**: Notificaciones + Solicitudes
-- [x] **Reseñas Completas**: Visualización de estrellas y comentarios
-- [x] **Login con Email**: Inicia sesión con usuario o correo
-- [x] **Perfil Limpio**: Solicitudes movidas a notificaciones
+1. 🏠 **Inicio**: Desliza por las listas curadas
+2. 🎬 **Detalle**: Toca cualquier película para ver:
+   - Sinopsis completa
+   - Reparto (toca un actor para ver su filmografía)
+   - Trailer de YouTube
+   - Películas similares
+3. ⭐ **Valorar**: Toca el ojo 👁️ para escribir tu reseña
+
+### **Sistema Social**
+
+#### **Buscar Usuarios**
+1. 🔍 Ve a **Buscar** → Cambia a **"Usuarios"**
+2. ✍️ Escribe el nombre de quien buscas
+3. 👤 Toca un perfil para verlo
+
+#### **Seguir a Alguien**
+- **Cuenta Pública**: Toca **"Seguir"** → Instantáneo
+- **Cuenta Privada**: Toca **"Solicitar"** → Espera aprobación
+
+#### **Gestionar Solicitudes**
+1. 🔔 Abre la **Campana** (esquina superior derecha)
+2. 📬 Verás las solicitudes en la parte superior
+3. ✅ **Acepta** o ❌ **Rechaza** con un toque
+
+### **Tu Perfil**
+
+- ❤️ **Favoritas**: Guarda películas con el corazón
+- ⭐ **Reseñas**: Ve todas tus valoraciones con estrellas y textos
+- 👥 **Seguidores/Siguiendo**: Gestiona tus conexiones
+- ⚙️ **Editar Perfil**: 
+  - Cambiar nombre/email (límite 14 días)
+  - Subir foto de perfil
+  - Cambiar contraseña
+  - Activar cuenta privada
 
 ---
 
-## 📡 Endpoints Principales
+## 🔧 Solución de Problemas
 
+### **El backend no inicia**
+
+```bash
+# Verifica que MongoDB esté corriendo
+brew services list | grep mongodb
+
+# Si no está activo, inícialo
+brew services start mongodb-community
 ```
-# Autenticación
-POST   /auth/register              # Crear cuenta
-POST   /auth/login                 # Login con usuario o email ⭐ NUEVO
 
-# Sistema Social
-GET    /users/search?q=...         # Buscar usuarios
-POST   /users/:id/follow           # Seguir
-DELETE /users/:id/remove-follower  # Eliminar seguidor
+### **No llegan emails de verificación**
 
-# Notificaciones
-GET    /notifications              # Obtener todas + solicitudes
-GET    /users/follow-requests      # Solicitudes pendientes
+- ✅ Verifica que usaste la **Contraseña de Aplicación** (no tu contraseña normal)
+- ✅ Comprueba el archivo `.env` en `Backend/`
+- ✅ Revisa la carpeta de Spam en tu email
 
-# Películas
-POST   /movies/interact            # Marcar fav/vista/reseña completa
+### **La app no se conecta al backend**
+
+- ✅ Asegúrate de que el backend esté corriendo (Paso 6)
+- ✅ Verifica que use `http://127.0.0.1:8080` en el código
+- ✅ Si usas iPhone físico, cambia a tu IP local
+
+### **Error al compilar en Xcode**
+
+```bash
+# Limpia el build
+⌘ + Shift + K
+
+# Borra DerivedData
+rm -rf ~/Library/Developer/Xcode/DerivedData
+
+# Vuelve a compilar
+⌘ + R
 ```
 
 ---
 
-## 🔐 Seguridad
+## 📖 Funcionalidades Avanzadas
 
-- ✅ **Contraseñas hasheadas** con Bcrypt (factor 12)
-- ✅ **Tokens UUID** únicos por sesión
-- ✅ **Login flexible**: Busca por username o email
-- ✅ **Validaciones** en frontend y backend
-- ✅ **Variables sensibles** en `.env` (excluido de Git)
-- ✅ **Device tokens** almacenados de forma segura
-- ⚠️ En producción, usa **HTTPS** siempre
+### **Notificaciones Push**
 
----
+Las notificaciones funcionan en simulador (locales) y en dispositivo real (push reales vía APNs).
 
-## 📝 Changelog
+**En Simulador:**
+- ✅ Verás banners cuando la app esté abierta
 
-### v2.1 (Última versión)
-- ✨ Solicitudes de seguimiento integradas en notificaciones
-- ✨ Badge inteligente (notificaciones + solicitudes)
-- ✨ Reseñas completas con estrellas y texto visible
-- ✨ Login con email además de usuario
-- 🐛 Corrección de errores de sincronización
-- 🎨 Perfil simplificado y más limpio
+**En Dispositivo Real:**
+- ✅ Notificaciones incluso con la app cerrada
+- 🔐 Requiere configurar certificado APNs (avanzado)
 
-### v2.0
-- ✨ Sistema social completo
-- ✨ Notificaciones push reales
-- ✨ Perfiles públicos/privados
-- ✨ Sistema de reseñas
+### **Cuenta Privada**
+
+1. ⚙️ Ve a **Perfil** → **Editar**
+2. 🔒 Activa **"Cuenta Privada"**
+3. 📬 Ahora recibirás solicitudes en vez de seguidores automáticos
+
+### **Sincronización**
+
+Todos tus datos se guardan:
+- 📱 **Localmente**: En tu dispositivo (favoritas, vistas)
+- ☁️ **En la nube**: En MongoDB (reseñas, seguidores)
 
 ---
 
-## 👨‍💻 Autor
+## 🌟 Próximas Funcionalidades
 
-**José Manuel Jiménez**
+- [ ] 💬 Comentarios en películas
+- [ ] 📱 Widget de iOS
+- [ ] 🎯 Recomendaciones personalizadas con IA
+- [ ] 🎬 Listas personalizadas de películas
+- [ ] 🔗 Compartir películas en redes sociales
+- [ ] 📺 Integración con servicios de streaming
+
+---
+
+## 🤝 Contribuir
+
+¿Quieres mejorar AuraMovies? ¡Las contribuciones son bienvenidas!
+
+1. 🍴 Haz un fork del proyecto
+2. 🌿 Crea una rama (`git checkout -b feature/nueva-funcion`)
+3. 💾 Haz commit (`git commit -m 'Añade nueva función'`)
+4. 📤 Push a la rama (`git push origin feature/nueva-funcion`)
+5. 🔀 Abre un Pull Request
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia MIT. Ver `LICENSE` para más detalles.
 
 ---
 
 ## 🙏 Agradecimientos
 
-- **TMDB** por su increíble API de películas
-- **Vapor** por el excelente framework de backend
-- **Apple** por SwiftUI y las herramientas de desarrollo
-- **MongoDB** por la base de datos flexible y potente
-- La comunidad de Swift por su apoyo continuo
+- 🎬 **TMDB** por su API gratuita de películas
+- 💨 **Vapor** por el framework de backend
+- 🍎 **Apple** por SwiftUI y las herramientas
+- 🍃 **MongoDB** por la base de datos
+- 👥 **Comunidad de Swift** por el apoyo constante
+
+---
+
+## 📞 Soporte
+
+¿Necesitas ayuda? 
+
+1. 📖 Revisa la [Solución de Problemas](#-solución-de-problemas)
+2. 🐛 Abre un [Issue](https://github.com/tu-usuario/aura-movies/issues)
+3. 📚 Consulta la documentación de [TMDB](https://developers.themoviedb.org/3), [Vapor](https://docs.vapor.codes/) o [MongoDB](https://www.mongodb.com/docs/)
 
 ---
 
 <p align="center">
-  <b>¡Disfruta explorando el mundo del cine con AuraMovies! 🍿</b>
+  <b>🍿 ¡Disfruta de AuraMovies y comparte tu pasión por el cine! 🍿</b>
   <br><br>
-  Desarrollado con ❤️ usando Swift, SwiftUI y Vapor
+  <img src="https://img.shields.io/badge/Made%20with-❤️-red.svg" alt="Made with Love">
+  <img src="https://img.shields.io/badge/Swift-5.9+-orange.svg" alt="Swift">
+  <img src="https://img.shields.io/badge/SwiftUI-iOS%2017+-blue.svg" alt="SwiftUI">
   <br>
-  <b>v2.1 - Notificaciones Mejoradas y Reseñas Completas</b>
+  <b>v2.1 - Red Social Cinematográfica</b>
 </p>

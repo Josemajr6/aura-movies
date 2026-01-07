@@ -40,7 +40,5 @@ struct GenreResultsView: View {
         .task {
             await viewModel.loadInitial()
         }
-        // AQUÍ NO DEBE HABER NINGÚN .navigationDestination
-        // El 'GenresView' (padre) ya sabe qué hacer con las Movies.
     }
 }

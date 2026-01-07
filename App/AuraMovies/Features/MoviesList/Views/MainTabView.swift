@@ -107,22 +107,52 @@ struct GenresView: View {
     }
 }
 
-// MAIN TAB VIEW
+// MAIN TAB VIEW 
 struct MainTabView: View {
+    @State private var selectedTab = 0
+    
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             HomeView()
-                .tabItem { Label("Inicio", systemImage: "house.fill") }
+                .tabItem {
+                    Label("Inicio", systemImage: selectedTab == 0 ? "house.fill" : "house")
+                }
+                .tag(0)
             
             GenresView()
-                .tabItem { Label("Categorías", systemImage: "square.grid.2x2.fill") }
+                .tabItem {
+                    Label("Categorías", systemImage: selectedTab == 1 ? "square.grid.2x2.fill" : "square.grid.2x2")
+                }
+                .tag(1)
             
             SearchView()
-                .tabItem { Label("Buscar", systemImage: "magnifyingglass") }
+                .tabItem {
+                    Label("Buscar", systemImage: selectedTab == 2 ? "magnifyingglass.circle.fill" : "magnifyingglass")
+                }
+                .tag(2)
             
             ProfileView()
-                .tabItem { Label("Perfil", systemImage: "person.circle.fill") }
+                .tabItem {
+                    Label("Perfil", systemImage: selectedTab == 3 ? "person.circle.fill" : "person.circle")
+                }
+                .tag(3)
         }
         .tint(.blue)
+        .onAppear {
+            // Personalizar apariencia del TabBar
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.systemBackground
+            
+            // Sombra sutil
+            appearance.shadowColor = UIColor.black.withAlphaComponent(0.1)
+            
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+        }
     }
+}
+
+#Preview {
+    MainTabView()
 }

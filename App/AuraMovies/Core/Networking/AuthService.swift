@@ -112,6 +112,9 @@ class AuthService: ObservableObject {
     }
     
     // MARK: - Verificación de código
+    // En AuthService.swift, reemplaza la función verifyCode:
+
+    // MARK: - Verificación
     func verifyCode(email: String, code: String) async throws -> Bool {
         guard let url = URL(string: "\(baseURL)/verify") else { throw AuthError.invalidURL }
         
@@ -128,10 +131,29 @@ class AuthService: ObservableObject {
             guard let http = response as? HTTPURLResponse else { throw AuthError.serverError("Respuesta inválida") }
             
             if http.statusCode == 200 {
-                if let tokenResponse = try? JSONDecoder().decode(TokenResponse.self, from: data) {
-                    // CORREGIDO: Se añade avatar: nil
-                    let tempUser = UserDTO(id: UUID(), username: email, email: email, avatar: nil, isPrivate: false)
-                    self.saveSession(token: tokenResponse.value, user: tempUser)
+                // 🔥 INTENTO 1: Decodificar LoginResponse (Token + Usuario COMPLETO)
+                if let loginResponse = try? JSONDecoder().decode(LoginResponse.self, from: data) {
+                    // ✅ Guardar sesión con el usuario REAL (no temporal)
+                    await MainActor.run {
+                        self.saveSession(token: loginResponse.token, user: loginResponse.user)
+                    }
+                    print("✅ Verificación exitosa - Usuario: \(loginResponse.user.username)")
+                    return true
+                }
+                // INTENTO 2: Fallback a TokenResponse (Legacy - Solo token)
+                else if let tokenResponse = try? JSONDecoder().decode(TokenResponse.self, from: data) {
+                    // ⚠️ Fallback: crear usuario temporal con el email
+                    let tempUser = UserDTO(
+                        id: UUID(),
+                        username: email, // Temporal hasta hacer login
+                        email: email,
+                        avatar: nil,
+                        isPrivate: false
+                    )
+                    await MainActor.run {
+                        self.saveSession(token: tokenResponse.value, user: tempUser)
+                    }
+                    print("⚠️ Verificación legacy - Se recomienda hacer login para actualizar datos")
                     return true
                 }
             } else {
